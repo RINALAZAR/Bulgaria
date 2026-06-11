@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>תיקי הנסיעות — רינה ומוטי לזר 2026</title>
+  <style>
+:root {
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --ink: #1b2233;
+  --muted: #66708a;
+  --accent: #1956d2;
+  --accent-soft: #e7eeff;
+  --gold: #b07a1f;
+  --gold-soft: #fdf3df;
+  --green: #1d7a4f;
+  --green-soft: #e2f5ea;
+  --warn: #b3261e;
+  --warn-soft: #fdeceb;
+  --radius: 16px;
+  --shadow: 0 2px 10px rgba(20, 35, 80, .08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Heebo", "Arial Hebrew", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+header {
+  background: linear-gradient(135deg, #11295e, #1956d2);
+  color: #fff;
+  padding: 26px 20px 20px;
+  text-align: center;
+}
+header h1 { margin: 0 0 4px; font-size: 1.55rem; }
+header .sub { opacity: .85; font-size: .95rem; }
+
+main { max-width: 980px; margin: 0 auto; padding: 20px 14px 60px; }
+
+.toolbar {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  justify-content: space-between; align-items: center;
+  margin: 4px 0 18px;
+}
+.toolbar .stamp { color: var(--muted); font-size: .88rem; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color .15s, transform .15s;
+}
+.card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.card h2 { margin: 0 0 2px; font-size: 1.15rem; color: var(--accent); }
+.card .dest { color: var(--muted); font-size: .92rem; margin-bottom: 10px; }
+.card .dates { font-weight: 600; font-size: 1rem; }
+.card .meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.card .counts { color: var(--muted); font-size: .85rem; margin-top: 10px; }
+
+.chip {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 99px;
+  font-size: .78rem;
+  font-weight: 600;
+  background: var(--accent-soft); color: var(--accent);
+}
+.chip.gold { background: var(--gold-soft); color: var(--gold); }
+.chip.green { background: var(--green-soft); color: var(--green); }
+.chip.warn { background: var(--warn-soft); color: var(--warn); }
+
+.btn {
+  border: none; border-radius: 10px;
+  padding: 8px 16px; font-size: .9rem; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+  background: var(--accent); color: #fff;
+}
+.btn.secondary { background: var(--accent-soft); color: var(--accent); }
+.btn.ghost { background: transparent; color: var(--muted); border: 1px solid #ccd3e3; }
+.btn:hover { filter: brightness(1.08); }
+
+/* trip detail */
+.back { margin-bottom: 14px; }
+section.block {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px;
+  margin-bottom: 18px;
+}
+section.block > h3 {
+  margin: 0 0 12px; font-size: 1.1rem;
+  border-bottom: 2px solid var(--accent-soft); padding-bottom: 8px;
+}
+
+.flight {
+  display: flex; flex-wrap: wrap; gap: 10px 18px;
+  align-items: center;
+  padding: 12px; border-radius: 12px;
+  background: var(--accent-soft);
+  margin-bottom: 10px;
+}
+.flight .dir { font-weight: 700; min-width: 52px; }
+.flight .route { flex: 1; min-width: 220px; }
+.flight .times { font-weight: 600; }
+.flight .small { color: var(--muted); font-size: .85rem; }
+
+.item {
+  border: 1px solid #e3e8f4; border-radius: 12px;
+  padding: 12px 14px; margin-bottom: 10px;
+}
+.item .head { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.item .name { font-weight: 700; }
+.item .desc { color: var(--ink); font-size: .92rem; margin: 6px 0; }
+.item .note { color: var(--warn); font-size: .88rem; margin: 6px 0; }
+.item .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.item .links a {
+  text-decoration: none; font-size: .82rem; font-weight: 600;
+  padding: 4px 10px; border-radius: 99px;
+  background: var(--green-soft); color: var(--green);
+}
+.item .links a.drive { background: var(--accent-soft); color: var(--accent); }
+.empty { color: var(--muted); font-style: italic; padding: 6px 2px; }
+
+/* forms */
+form.adder {
+  margin-top: 12px; padding: 14px;
+  border: 2px dashed #c8d2ea; border-radius: 12px;
+  display: none;
+}
+form.adder.open { display: block; }
+form.adder label { display: block; font-size: .85rem; font-weight: 600; margin: 8px 0 2px; }
+form.adder input, form.adder select, form.adder textarea {
+  width: 100%; padding: 8px 10px; border: 1px solid #ccd3e3;
+  border-radius: 8px; font-family: inherit; font-size: .9rem;
+}
+form.adder .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+form.adder .actions { margin-top: 12px; display: flex; gap: 8px; }
+
+footer {
+  text-align: center; color: var(--muted);
+  font-size: .82rem; padding: 18px;
+}
+@media (max-width: 560px) {
+  form.adder .row { grid-template-columns: 1fr; }
+}
+
+</style>
+</head>
+<body>
+  <header>
+    <h1>✈️ תיקי הנסיעות — רינה ומוטי לזר 2026</h1>
+    <div class="sub">כל מועד טיסה הלוך-ושוב מתל אביב בתיק נפרד: טיסות, הזמנות, טיולים ומסלולי ניווט</div>
+  </header>
+
+  <main>
+    <div class="toolbar">
+      <span class="stamp" id="stamp"></span>
+      <span>
+        <button class="btn secondary" id="export">⬇️ ייצוא נתונים מעודכנים</button>
+        <button class="btn ghost" id="clear">איפוס תוספות</button>
+      </span>
+    </div>
+    <div id="view" class="grid"></div>
+  </main>
+
+  <footer>
+    הנתונים מבוססים על גיליון "מעודכן 10.6" ואישורי ההזמנה במייל ·
+    עדכון טיסה או הזמנה חדשה מתבצע בקובץ data.js או דרך כפתורי ההוספה באתר
+  </footer>
+
+  <script>
+// ============================================================
+// נתוני תיקי הנסיעות — רינה ומרדכי לזר 2026
+// קובץ זה הוא "מקור האמת" של האתר.
+// כל עדכון של טיסה / הזמנה / טיול מתבצע כאן (או דרך כפתורי
+// ההוספה באתר עצמו, שנשמרים בדפדפן וניתנים לייצוא).
+// מקור הנתונים: גיליון "מעודכן 10.6" (V8) + אישורי הזמנה במייל.
+// ============================================================
+
+window.TRIPS_DATA = {
+  lastUpdated: "2026-06-11",
+  travelers: ["רינה לזר", "מרדכי לזר"],
+  trips: [
+    {
+      id: "YK5LMF",
+      title: "נסיעה 1 · יוני–יולי",
+      destination: "מילאנו מלפנסה (MXP)",
+      bookingCode: "YK5LMF",
+      airline: "Wizz Air",
+      manageUrl: "https://www.wizzair.com/he-il/information-and-services/booking-information/check-in-and-boarding",
+      status: "מאושר",
+      price: "159.96 EUR",
+      outbound: {
+        date: "2026-06-15", depTime: "18:55", arrTime: "22:10",
+        flightNo: "W4 6404", from: "תל אביב (TLV)", to: "מילאנו מלפנסה (MXP)"
+      },
+      inbound: {
+        date: "2026-07-09", depTime: "13:05", arrTime: "18:00",
+        flightNo: "W4 6403", from: "מילאנו מלפנסה (MXP)", to: "תל אביב (TLV)"
+      },
+      services: [
+        {
+          type: "מלון",
+          name: "Crowne Plaza Milan – Malpensa Airport",
+          date: "2026-07-15", endDate: "2026-07-16",
+          ref: "49708163",
+          note: "⚠️ לבדיקה: ההזמנה היא ל-15–16/7, אחרי מועד טיסת החזרה הנוכחי (9/7). ייתכן שנותרה מתוכנית קודמת — לבדוק מול המלון (שולם מראש, ללא החזר).",
+          mapUrl: "https://maps.google.com/?q=Crowne+Plaza+Milan+Malpensa+Airport"
+        }
+      ],
+      excursions: [
+        {
+          name: "דולומיטים יום 1: עמק ג'נובה ואגם טובל (22/6)",
+          length: "ארוך", mode: "רכב + רגלי",
+          desc: "נסיעה מקוסטה וולפינו לעמק ג'נובה דרך SS42 (כ-115 ק\"מ, 2.5 שעות). הליכה שטוחה למפלי נרדיס (2–3 ק\"מ הלוך-ושוב), המשך לאגם טובל (55 ק\"מ) והקפת האגם (כ-5 ק\"מ מעגלי). לינה באזור Mezzocorona.",
+          driveUrl: "https://maps.google.com/?q=Val+di+Genova",
+          wazeUrl: "https://waze.com/ul?q=Val%20di%20Genova&navigate=yes",
+          komootUrl: "https://www.komoot.com/discover?q=Lago+di+Tovel+Loop",
+          alltrailsUrl: "https://www.alltrails.com/explore?q=Lago+di+Tovel+Circular+Walk"
+        },
+        {
+          name: "דולומיטים יום 2: רכס סצ'דה וזאנסר אלם (23/6)",
+          length: "ארוך", mode: "רכב + רכבל + רגלי",
+          desc: "נסיעה לאורטיזיי (כ-65 ק\"מ), עלייה ברכבל סצ'דה לגובה 2,500 מ' והליכת רכס 3–4 ק\"מ. ⚠️ מקיץ 2026 חובה להזמין משבצת זמן לרכבל מראש! המשך לואל די פונס — מסלול זאנסר אלם (כ-4 ק\"מ) ותצפית סנטה מגדלנה.",
+          driveUrl: "https://maps.google.com/?q=Ortisei+Seceda+Cableway",
+          wazeUrl: "https://waze.com/ul?q=Ortisei%20Seceda&navigate=yes",
+          komootUrl: "https://www.komoot.com/discover?q=Seceda+Ridgeline+Walk",
+          alltrailsUrl: "https://www.alltrails.com/explore?q=Seceda+Pieralongia"
+        },
+        {
+          name: "דולומיטים יום 3: אלפה די סיוזי ואגם קארצה (24/6)",
+          length: "ארוך", mode: "רכב + רכבל + רגלי",
+          desc: "עלייה ברכבל מ-Seis am Schlern לרמה האלפינית הגבוהה באירופה — הליכה מישורית 5–6 ק\"מ מול הסאסולונגו. אחה\"צ: אגם קארצה (\"אגם הקשת בענן\") — הקפה קלה של 1.5 ק\"מ.",
+          driveUrl: "https://maps.google.com/?q=Seis+am+Schlern+Cableway",
+          wazeUrl: "https://waze.com/ul?q=Seis%20am%20Schlern&navigate=yes",
+          komootUrl: "https://www.komoot.com/discover?q=Alpe+di+Siusi+Easy+Walk",
+          alltrailsUrl: "https://www.alltrails.com/explore?q=Lago+di+Carezza+Loop"
+        },
+        {
+          name: "דולומיטים יום 4: אגם מולבנו וחזרה (25/6)",
+          length: "ארוך", mode: "רכב + רגלי",
+          desc: "סיום טיול הכוכב בדולומיטים: אגם מולבנו — טיילת נינוחה לאורך החוף, וחזרה לקוסטה וולפינו.",
+          driveUrl: "https://maps.google.com/?q=Lago+di+Molveno",
+          wazeUrl: "https://waze.com/ul?q=Lago%20di%20Molveno&navigate=yes",
+          komootUrl: "https://www.komoot.com/discover?q=Lago+di+Molveno",
+          alltrailsUrl: "https://www.alltrails.com/explore?q=Lago+di+Molveno"
+        }
+      ]
+    },
+    {
+      id: "VKLCKS",
+      title: "נסיעה 2 · אוגוסט–ספטמבר",
+      destination: "מילאנו מלפנסה (MXP)",
+      bookingCode: "VKLCKS",
+      airline: "Wizz Air",
+      manageUrl: "https://www.wizzair.com/he-il/information-and-services/booking-information/check-in-and-boarding",
+      status: "מאושר",
+      price: "720.96 EUR",
+      outbound: {
+        date: "2026-08-14", depTime: "10:50", arrTime: "14:05",
+        flightNo: "W4 6406", from: "תל אביב (TLV)", to: "מילאנו מלפנסה (MXP)"
+      },
+      inbound: {
+        date: "2026-09-08", depTime: "13:05", arrTime: "18:00",
+        flightNo: "W4 6403", from: "מילאנו מלפנסה (MXP)", to: "תל אביב (TLV)"
+      },
+      services: [],
+      excursions: []
+    },
+    {
+      id: "XT1YNX",
+      title: "נסיעה 3 · ספטמבר–אוקטובר",
+      destination: "מילאנו מלפנסה (MXP)",
+      bookingCode: "XT1YNX",
+      airline: "Wizz Air",
+      manageUrl: "https://www.wizzair.com/he-il/information-and-services/booking-information/check-in-and-boarding",
+      status: "מאושר",
+      price: "",
+      outbound: {
+        date: "2026-09-26", depTime: "10:50", arrTime: "14:05",
+        flightNo: "W4 6406", from: "תל אביב (TLV)", to: "מילאנו מלפנסה (MXP)"
+      },
+      inbound: {
+        date: "2026-10-15", depTime: "13:05", arrTime: "18:00",
+        flightNo: "W4 6403", from: "מילאנו מלפנסה (MXP)", to: "תל אביב (TLV)"
+      },
+      services: [],
+      excursions: []
+    },
+    {
+      id: "XVBLSF",
+      title: "נסיעה 4 · אוקטובר–נובמבר",
+      destination: "מילאנו מלפנסה (MXP)",
+      bookingCode: "XVBLSF",
+      airline: "אל על",
+      manageUrl: "https://www.elal.com/he/manage-booking",
+      status: "מאושר (כרטוס + מימוש נקודות)",
+      price: "",
+      outbound: {
+        date: "2026-10-28", depTime: "06:40", arrTime: "09:55",
+        flightNo: "LY381", from: "תל אביב (TLV)", to: "מילאנו מלפנסה (MXP)"
+      },
+      inbound: {
+        date: "2026-11-17", depTime: "20:10", arrTime: "00:55",
+        arrDate: "2026-11-18",
+        flightNo: "LY388", from: "מילאנו מלפנסה (MXP)", to: "תל אביב (TLV)"
+      },
+      services: [],
+      excursions: []
+    }
+  ]
+};
+
+</script>
+  <script>
+/* תיקי נסיעות — לוגיקת האתר.
+   הנתונים הקבועים מגיעים מ-data.js; תוספות שנעשות בדפדפן
+   נשמרות ב-localStorage וניתנות לייצוא כקובץ JSON מעודכן. */
+
+const OVERLAY_KEY = "lazar-trips-overlay-v1";
+const $ = (sel, el = document) => el.querySelector(sel);
+
+const DAY_NAMES = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
+
+function loadOverlay() {
+  try { return JSON.parse(localStorage.getItem(OVERLAY_KEY)) || {}; }
+  catch { return {}; }
+}
+function saveOverlay(ov) { localStorage.setItem(OVERLAY_KEY, JSON.stringify(ov)); }
+
+function mergedTrip(trip) {
+  const ov = loadOverlay()[trip.id] || {};
+  return {
+    ...trip,
+    services: [...trip.services, ...(ov.services || [])],
+    excursions: [...trip.excursions, ...(ov.excursions || [])]
+  };
+}
+
+function fmtDate(iso) {
+  if (!iso) return "";
+  const d = new Date(iso + "T00:00:00");
+  return `יום ${DAY_NAMES[d.getDay()]}, ${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`;
+}
+function shortDate(iso) {
+  const d = new Date(iso + "T00:00:00");
+  return `${d.getDate()}.${d.getMonth() + 1}`;
+}
+function daysUntil(iso) {
+  const now = new Date(); now.setHours(0, 0, 0, 0);
+  return Math.round((new Date(iso + "T00:00:00") - now) / 86400000);
+}
+
+/* ---------- מסך ראשי: רשימת תיקים ---------- */
+function renderHome() {
+  const data = window.TRIPS_DATA;
+  $("#stamp").textContent = `עדכון אחרון: ${fmtDate(data.lastUpdated)} · נוסעים: ${data.travelers.join(" ו")}`;
+  const grid = $("#view");
+  grid.innerHTML = "";
+  grid.className = "grid";
+
+  data.trips.forEach(t => {
+    const m = mergedTrip(t);
+    const dleft = daysUntil(t.outbound.date);
+    const card = document.createElement("article");
+    card.className = "card";
+    card.innerHTML = `
+      <h2>${t.title}</h2>
+      <div class="dest">✈️ ${t.destination} · ${t.airline}</div>
+      <div class="dates">${shortDate(t.outbound.date)} ← ${shortDate(t.inbound.date)} (${fmtDate(t.outbound.date).split(",")[0]})</div>
+      <div class="meta">
+        <span class="chip">קוד הזמנה: ${t.bookingCode}</span>
+        <span class="chip green">${t.status}</span>
+        ${dleft >= 0 ? `<span class="chip gold">בעוד ${dleft} ימים</span>` : `<span class="chip">הסתיימה</span>`}
+      </div>
+      <div class="counts">🏨 ${m.services.length} שירותי תיירות · 🥾 ${m.excursions.length} טיולים בתיק</div>`;
+    card.onclick = () => { location.hash = t.id; };
+    grid.appendChild(card);
+  });
+}
+
+/* ---------- תיק נסיעה ---------- */
+function flightRow(dir, f) {
+  return `
+    <div class="flight">
+      <span class="dir">${dir}</span>
+      <span class="route">${f.from} ← ${f.to}<br><span class="small">${fmtDate(f.date)} · טיסה ${f.flightNo}</span></span>
+      <span class="times">${f.depTime} ← ${f.arrTime}${f.arrDate ? ` <span class="small">(נחיתה ${shortDate(f.arrDate)})</span>` : ""}</span>
+    </div>`;
+}
+
+function serviceItem(s) {
+  const dates = s.endDate ? `${fmtDate(s.date)} – ${fmtDate(s.endDate)}` : fmtDate(s.date);
+  return `
+    <div class="item">
+      <div class="head">
+        <span class="name">${s.type ? s.type + ": " : ""}${s.name}</span>
+        ${s.ref ? `<span class="chip">אסמכתא ${s.ref}</span>` : ""}
+      </div>
+      <div class="desc">${dates}</div>
+      ${s.note ? `<div class="note">${s.note}</div>` : ""}
+      <div class="links">
+        ${s.mapUrl ? `<a class="drive" href="${s.mapUrl}" target="_blank" rel="noopener">🗺️ מיקום במפה</a>` : ""}
+      </div>
+    </div>`;
+}
+
+function excursionItem(e) {
+  return `
+    <div class="item">
+      <div class="head">
+        <span class="name">${e.name}</span>
+        <span>
+          <span class="chip gold">${e.length}</span>
+          <span class="chip">${e.mode}</span>
+        </span>
+      </div>
+      ${e.desc ? `<div class="desc">${e.desc}</div>` : ""}
+      <div class="links">
+        ${e.driveUrl ? `<a class="drive" href="${e.driveUrl}" target="_blank" rel="noopener">🚗 ניווט Google Maps</a>` : ""}
+        ${e.wazeUrl ? `<a class="drive" href="${e.wazeUrl}" target="_blank" rel="noopener">🚗 Waze</a>` : ""}
+        ${e.komootUrl ? `<a href="${e.komootUrl}" target="_blank" rel="noopener">🥾 Komoot</a>` : ""}
+        ${e.alltrailsUrl ? `<a href="${e.alltrailsUrl}" target="_blank" rel="noopener">🥾 AllTrails</a>` : ""}
+      </div>
+    </div>`;
+}
+
+function renderTrip(id) {
+  const base = window.TRIPS_DATA.trips.find(t => t.id === id);
+  if (!base) { location.hash = ""; return; }
+  const t = mergedTrip(base);
+  const view = $("#view");
+  view.className = "";
+  view.innerHTML = `
+    <div class="back"><button class="btn ghost" onclick="location.hash=''">→ חזרה לכל התיקים</button></div>
+
+    <section class="block">
+      <h3>✈️ טיסות — ${t.title} (${t.airline}, קוד ${t.bookingCode})</h3>
+      ${flightRow("הלוך", t.outbound)}
+      ${flightRow("חזור", t.inbound)}
+      <div class="links" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+        <span class="chip green">${t.status}</span>
+        ${t.price ? `<span class="chip gold">מחיר: ${t.price}</span>` : ""}
+        <a class="chip" style="text-decoration:none" href="${t.manageUrl}" target="_blank" rel="noopener">ניהול ההזמנה באתר ${t.airline} ↗</a>
+      </div>
+    </section>
+
+    <section class="block">
+      <h3>🏨 שירותי תיירות (מלונות, רכב, אטרקציות)</h3>
+      <div id="services">${t.services.map(serviceItem).join("") || `<div class="empty">עדיין אין הזמנות בתיק זה — כל אישור הזמנה חדש יתווסף כאן.</div>`}</div>
+      <button class="btn secondary" onclick="toggleForm('svc-form')">+ הוספת שירות</button>
+      <form class="adder" id="svc-form">
+        <div class="row">
+          <div><label>סוג</label>
+            <select name="type"><option>מלון</option><option>רכב שכור</option><option>אטרקציה</option><option>הסעה</option><option>אחר</option></select>
+          </div>
+          <div><label>שם</label><input name="name" required></div>
+        </div>
+        <div class="row">
+          <div><label>מתאריך</label><input type="date" name="date" required></div>
+          <div><label>עד תאריך (לא חובה)</label><input type="date" name="endDate"></div>
+        </div>
+        <div class="row">
+          <div><label>מס' אסמכתא</label><input name="ref"></div>
+          <div><label>קישור מפה (לא חובה)</label><input name="mapUrl" placeholder="https://maps.google.com/?q=..."></div>
+        </div>
+        <label>הערה</label><input name="note">
+        <div class="actions">
+          <button class="btn" type="submit">שמירה</button>
+          <button class="btn ghost" type="button" onclick="toggleForm('svc-form')">ביטול</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="block">
+      <h3>🥾 טיולים ומסלולים — קצרים וארוכים, ברכב וברגל</h3>
+      <div id="excursions">${t.excursions.map(excursionItem).join("") || `<div class="empty">עדיין אין טיולים בתיק זה — אפשר להוסיף מסלולים עם קישורי ניווט.</div>`}</div>
+      <button class="btn secondary" onclick="toggleForm('exc-form')">+ הוספת טיול</button>
+      <form class="adder" id="exc-form">
+        <label>שם הטיול</label><input name="name" required>
+        <div class="row">
+          <div><label>אורך</label>
+            <select name="length"><option>קצר</option><option>ארוך</option></select>
+          </div>
+          <div><label>אופן</label>
+            <select name="mode"><option>רגלי</option><option>רכב</option><option>רכב + רגלי</option><option>אופניים</option></select>
+          </div>
+        </div>
+        <label>תיאור</label><textarea name="desc" rows="2"></textarea>
+        <div class="row">
+          <div><label>ניווט ברכב — Google Maps</label><input name="driveUrl" placeholder="https://maps.google.com/?q=..."></div>
+          <div><label>ניווט ברכב — Waze</label><input name="wazeUrl" placeholder="https://waze.com/ul?q=..."></div>
+        </div>
+        <div class="row">
+          <div><label>מסלול רגלי/אופניים — Komoot</label><input name="komootUrl"></div>
+          <div><label>מסלול רגלי — AllTrails</label><input name="alltrailsUrl"></div>
+        </div>
+        <div class="actions">
+          <button class="btn" type="submit">שמירה</button>
+          <button class="btn ghost" type="button" onclick="toggleForm('exc-form')">ביטול</button>
+        </div>
+      </form>
+    </section>`;
+
+  $("#svc-form").onsubmit = ev => { ev.preventDefault(); addItem(id, "services", ev.target); };
+  $("#exc-form").onsubmit = ev => { ev.preventDefault(); addItem(id, "excursions", ev.target); };
+}
+
+window.toggleForm = fid => $("#" + fid).classList.toggle("open");
+
+function addItem(tripId, kind, form) {
+  const entry = {};
+  new FormData(form).forEach((v, k) => { if (String(v).trim()) entry[k] = String(v).trim(); });
+  const ov = loadOverlay();
+  ov[tripId] = ov[tripId] || {};
+  ov[tripId][kind] = ov[tripId][kind] || [];
+  ov[tripId][kind].push(entry);
+  saveOverlay(ov);
+  renderTrip(tripId);
+}
+
+/* ייצוא הנתונים המלאים (בסיס + תוספות) לקובץ JSON */
+function exportData() {
+  const out = {
+    ...window.TRIPS_DATA,
+    lastUpdated: new Date().toISOString().slice(0, 10),
+    trips: window.TRIPS_DATA.trips.map(mergedTrip)
+  };
+  const blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `trips-${out.lastUpdated}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function route() {
+  const id = location.hash.replace("#", "");
+  if (id) renderTrip(id); else renderHome();
+  window.scrollTo(0, 0);
+}
+
+window.addEventListener("hashchange", route);
+window.addEventListener("DOMContentLoaded", () => {
+  $("#export").onclick = exportData;
+  $("#clear").onclick = () => {
+    if (confirm("למחוק את כל התוספות שנשמרו בדפדפן זה? (הנתונים הקבועים מ-data.js יישארו)")) {
+      localStorage.removeItem(OVERLAY_KEY);
+      route();
+    }
+  };
+  route();
+});
+
+</script>
+</body>
+</html>
