@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>תיקי הנסיעות — רינה ומוטי לזר 2026</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>✈️ תיקי הנסיעות — רינה ומוטי לזר 2026</h1>
+    <div class="sub">כל מועד טיסה הלוך-ושוב מתל אביב בתיק נפרד: טיסות, הזמנות, טיולים ומסלולי ניווט</div>
+  </header>
+
+  <main>
+    <div class="toolbar">
+      <span class="stamp" id="stamp"></span>
+      <span>
+        <button class="btn secondary" id="export">⬇️ ייצוא נתונים מעודכנים</button>
+        <button class="btn ghost" id="clear">איפוס תוספות</button>
+      </span>
+    </div>
+    <div id="view" class="grid"></div>
+  </main>
+
+  <footer>
+    הנתונים מבוססים על גיליון "מעודכן 10.6" ואישורי ההזמנה במייל ·
+    עדכון טיסה או הזמנה חדשה מתבצע בקובץ data.js או דרך כפתורי ההוספה באתר
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
