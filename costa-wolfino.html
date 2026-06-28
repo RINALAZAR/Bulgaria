@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>החיים הטובים – קוסטה וולפינו ואגם איזאו</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #eef4f7;
+    color: #2a3a4a;
+    line-height: 1.7;
+    direction: rtl;
+  }
+  header {
+    background: linear-gradient(135deg, #1a5f7a 0%, #0d9b6e 100%);
+    color: white;
+    text-align: center;
+    padding: 40px 20px 30px;
+  }
+  header h1 { font-size: 2.2em; margin-bottom: 8px; letter-spacing: 1px; }
+  header p { font-size: 1.05em; opacity: 0.9; }
+  .flag { font-size: 1.4em; }
+
+  /* TOC */
+  .toc-section {
+    max-width: 960px;
+    margin: 30px auto;
+    padding: 0 16px;
+  }
+  .toc-section h2 {
+    text-align: center;
+    font-size: 1.4em;
+    color: #1a5f7a;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #1a5f7a;
+    padding-bottom: 8px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .toc-card {
+    background: white;
+    border-radius: 10px;
+    padding: 16px 14px;
+    text-decoration: none;
+    color: #1a5f7a;
+    font-weight: bold;
+    font-size: 0.95em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-right: 4px solid #1a5f7a;
+    transition: transform .15s, box-shadow .15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toc-card:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.13); }
+  .toc-card .icon { font-size: 1.4em; flex-shrink: 0; }
+
+  /* Chapters */
+  .chapters { max-width: 960px; margin: 0 auto 40px; padding: 0 16px; }
+  .chapter { margin-bottom: 28px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.09); }
+  .chapter-header {
+    background: linear-gradient(135deg, #1a5f7a, #0d9b6e);
+    color: white;
+    padding: 18px 22px;
+    font-size: 1.25em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .chapter-body { background: white; }
+
+  /* Topics (accordion) */
+  .topic { border-bottom: 1px solid #e8eef2; }
+  .topic:last-child { border-bottom: none; }
+  .topic-header {
+    padding: 14px 22px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1em;
+    color: #1a5f7a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    transition: background .12s;
+  }
+  .topic-header:hover { background: #f0f8fc; }
+  .topic-header.active { background: #e6f4fa; }
+  .topic-header::after { content: '▼'; font-size: 0.75em; color: #888; transition: transform .2s; }
+  .topic-header.active::after { transform: rotate(180deg); }
+  .topic-content {
+    display: none;
+    padding: 0 22px 18px;
+    font-size: 0.93em;
+    color: #344;
+  }
+  .topic-content.open { display: block; }
+  .topic-content p { margin: 8px 0; }
+  .topic-content ul { padding-right: 20px; margin: 8px 0; }
+  .topic-content li { margin: 5px 0; }
+  .topic-content strong { color: #1a5f7a; }
+
+  /* Buttons */
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .btn {
+    display: inline-block;
+    padding: 7px 13px;
+    border-radius: 6px;
+    font-size: 0.82em;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    transition: opacity .15s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn-map  { background: #e74c3c; }
+  .btn-walk { background: #27ae60; }
+  .btn-bike { background: #f39c12; }
+  .btn-drive{ background: #2980b9; }
+  .btn-web  { background: #7f8c8d; }
+  .btn-train{ background: #8e44ad; }
+  .btn-komoot { background: #6ab04c; }
+
+  /* Badges */
+  .badge-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+  .badge {
+    background: #e6f4fa;
+    border: 1px solid #b0d8ea;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 0.8em;
+    color: #1a5f7a;
+  }
+  .badge.green { background: #e6f9ef; border-color: #a0ddb8; color: #0d7a4a; }
+  .badge.orange { background: #fff4e6; border-color: #f5c88a; color: #b05e00; }
+  .badge.red { background: #fdecea; border-color: #f5a8a0; color: #a02020; }
+
+  /* Info boxes */
+  .tip-box { background: #e6f9ef; border-right: 4px solid #0d9b6e; padding: 10px 14px; margin: 10px 0; border-radius: 4px; font-size: 0.9em; }
+  .info-box { background: #fff8e1; border-right: 4px solid #f0b429; padding: 10px 14px; margin: 10px 0; border-radius: 4px; font-size: 0.9em; }
+  .warn-box { background: #fff0f0; border-right: 4px solid #e74c3c; padding: 10px 14px; margin: 10px 0; border-radius: 4px; font-size: 0.9em; }
+
+  /* Difficulty */
+  .diff { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.78em; font-weight: bold; margin-right: 6px; }
+  .easy { background: #d4edda; color: #155724; }
+  .medium { background: #fff3cd; color: #856404; }
+  .hard { background: #f8d7da; color: #721c24; }
+
+  /* Section divider inside topic */
+  .sub-title { font-weight: bold; color: #0d9b6e; margin: 12px 0 4px; font-size: 0.95em; border-bottom: 1px solid #d0ead8; padding-bottom: 3px; }
+
+  footer { text-align: center; padding: 24px; color: #888; font-size: 0.85em; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="flag">🇮🇱 🇮🇹</div>
+  <h1>החיים הטובים – קוסטה וולפינו</h1>
+  <p>המדריך המלא לאגם איזאו, ההרים והסביבה · של רינה ומוטי לזר</p>
+</header>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc-section">
+  <h2>תוכן עניינים</h2>
+  <div class="toc-grid">
+    <a class="toc-card" href="#ch1"><span class="icon">🥾</span> הליכות טבע – קרוב לבית</a>
+    <a class="toc-card" href="#ch2"><span class="icon">⛰️</span> הליכות טבע – כשעה נסיעה</a>
+    <a class="toc-card" href="#ch3"><span class="icon">🚴</span> אופניים + רכבת</a>
+    <a class="toc-card" href="#ch4"><span class="icon">🏊</span> מים, חופים ושחייה</a>
+    <a class="toc-card" href="#ch5"><span class="icon">⛷️</span> הרים, שלג וסקי</a>
+    <a class="toc-card" href="#ch6"><span class="icon">♨️</span> ספא ומעיינות חמים</a>
+    <a class="toc-card" href="#ch7"><span class="icon">🗺️</span> טיולי יום מרוחקים</a>
+    <a class="toc-card" href="#ch8"><span class="icon">🛒</span> קניות וקולינריה</a>
+    <a class="toc-card" href="#ch9"><span class="icon">👨‍👩‍👧</span> משפחה וילדים</a>
+    <a class="toc-card" href="#ch10"><span class="icon">🎪</span> פסטיבלים ואירועים</a>
+  </div>
+</div>
+
+<!-- CHAPTERS -->
+<div class="chapters">
+
+<!-- CH1: HIKING NEARBY -->
+<div class="chapter" id="ch1">
+  <div class="chapter-header">🥾 פרק 1: הליכות טבע – קרוב לקוסטה וולפינו (עד 30 דק' נסיעה)</div>
+  <div class="chapter-body">
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">פונטה קמורלי – מבט על האגם ועמק קמוניקה</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~5 ק"מ</span><span class="badge">1.5–2 שעות</span><span class="badge">~300 מ' עלייה</span><span class="diff easy">קל</span></div>
+        <p>מסלול יער עם נוף פנורמי מרהיב על אגם איזאו ועל עמק ואל קמוניקה. יוצאים ישירות מקוסטה וולפינו דרך שבילים מסומנים (CAI).</p>
+        <div class="tip-box">💡 הגיעו בבוקר מוקדם לנוף ללא ערפל. אחרי הטיול – גלידה בלובר הסמוכה.</div>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Punta+Camorelli+Costa+Volpino" target="_blank">📍 מפה</a>
+          <a class="btn btn-walk" href="https://www.google.com/maps/dir/?api=1&destination=Punta+Camorelli+Costa+Volpino&travelmode=walking" target="_blank">🚶 ניווט להליכה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Costa+Volpino+BG+Italy&travelmode=driving" target="_blank">🚗 ניווט לנסיעה</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/Punta%20Camorelli%20Costa%20Volpino" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">מסלול האגם – קוסטה וולפינו לפיסוניה (נהר אוליו)</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~6 ק"מ</span><span class="badge">1.5 שעות</span><span class="badge">שטוח לחלוטין</span><span class="diff easy">קל מאוד</span></div>
+        <p>הליכה לאורך גדת נהר אוליו ופרק הציפורים, עם מעבר על גשר הרגלים "Ponte della Pace" לפיסוניה. שמורת טבע שקטה ונעימה.</p>
+        <div class="tip-box">💡 בפיסוניה שווה לבקר בכנסיית Santa Maria della Neve עם פרסקות של רומאנינו מהמאה ה-16.</div>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Parco+Naturale+Oglio+Nord+Costa+Volpino" target="_blank">📍 מפה</a>
+          <a class="btn btn-walk" href="https://www.google.com/maps/dir/?api=1&destination=Pisogne+BS+Italy&travelmode=walking" target="_blank">🚶 ניווט להליכה</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/Oglio+Nord+Costa+Volpino" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">שביל טולינה–וולו (Sentiero Toline–Vello) – צמוד לקו המים</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~5 ק"מ לכיוון</span><span class="badge">שטוח לחלוטין</span><span class="badge">10 דק' נסיעה</span><span class="diff easy">קל</span></div>
+        <p>שביל סלול ורחב (סגור לרכב) החצוב בסלע ממש מעל קו המים. עובר בין מצוקי סלע אדירים לבין שפת אגם איזאו לכל אורכו. ניתן לחנות בטולינה וללכת לוולו, ולחזור ברכבת המקומית מוולו לתחנת פיזונייה.</p>
+        <div class="tip-box">💡 אפשרות חזרה: רכבת Trenord מ-Vello לפיסוניה – קנו כרטיס מראש.</div>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Toline+Lago+d'Iseo" target="_blank">📍 חנייה בטולינה</a>
+          <a class="btn btn-walk" href="https://www.google.com/maps/dir/?api=1&destination=Vello+Marone+BS+Italy&travelmode=walking" target="_blank">🚶 ניווט הליכה לוולו</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Toline+Marone+BS+Italy&travelmode=driving" target="_blank">🚗 ניווט לחנייה</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/Sentiero+Toline+Vello+Iseo" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">רמת בוסיקו (Bossico Plateau) – המרפסת של האגם</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~5 ק"מ מעגלי</span><span class="badge">1.5–2 שעות</span><span class="badge">900 מ' גובה</span><span class="badge">20 דק' נסיעה</span><span class="diff easy">קל</span></div>
+        <p>רמה שטוחה וגבוהה המשקיפה על כל האגם. מסלולי יער אורנים רחבים ונוחים. מסומן היטב ומתאים מאוד למשפחות. ישנם אזורי מנגל (BBQ) ייעודיים לפיקניק.</p>
+        <div class="tip-box">💡 באגרוטוריזמו בבוסיקו מוכרים גבינות מקומיות – שלבו ארוחה עם הטיול.</div>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Bossico+BG+Italy" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Bossico+BG+Italy&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/Bossico+Forest+Loop+Iseo" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">אגם מורו (Lake Moro / Capo di Lago) – פנינה נסתרת</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">הקפה ~1 שעה</span><span class="badge">15 דק' נסיעה</span><span class="diff easy">קל</span></div>
+        <p>אגם אלפיני קטן ונסתר מעל Darfo. ניתן להקיף ברגל בין בתי אבן עתיקים, כרמים ומצוקים הנופלים למים. בקיץ – שחייה במים נעימים ופינות חמד לקפה או כריך על גדת האגם.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Lago+di+Moro+Capo+di+Lago+Darfo" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Lago+di+Moro+Darfo+Boario+Terme&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/Lago+di+Moro+Loop" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">לובר – מסלול הכרך ההיסטורי (I Borghi più belli d'Italia)</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~4 ק"מ</span><span class="badge">1–1.5 שעות</span><span class="badge">5 דק' נסיעה</span><span class="diff easy">קל</span></div>
+        <p>לובר נבחרה לאחד הכפרים היפים באיטליה. הליכה לאורך חזית האגם לכיכר Piazza XIII Martiri, עלייה לאזור ההיסטורי ומבט פנורמי מ-Piazza dell'Orologio.</p>
+        <div class="tip-box">💡 בקיץ: קונצרטים חיים בכיכר הראשית. כדאי לאכול ארוחת צהריים שם.</div>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Lovere+BG+Italy" target="_blank">📍 מפה</a>
+          <a class="btn btn-walk" href="https://www.google.com/maps/dir/?api=1&destination=Piazza+XIII+Martiri+Lovere+BG&travelmode=walking" target="_blank">🚶 ניווט הליכה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Lovere+BG+Italy&travelmode=driving" target="_blank">🚗 ניווט</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">פרק הציפורים – שמורת אוליו נורד (ממש ליד הבית)</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">3–4 ק"מ</span><span class="badge">1–1.5 שעות</span><span class="badge">שטוח לחלוטין</span><span class="diff easy">קל מאוד</span></div>
+        <p>שמורת טבע בצמוד לקוסטה וולפינו – ביצה עם נתיבי עץ, מגדלי תצפית וציפורים נדירות. מסלול שטוח לחלוטין, אידיאלי לכל גיל ועונה.</p>
+        <div class="tip-box">💡 צאו עם משקפות בשעות הבוקר המוקדמות לצפייה בציפורים מהגרות באביב ובסתיו.</div>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Parco+Naturale+Oglio+Nord+Costa+Volpino" target="_blank">📍 מפה</a>
+          <a class="btn btn-walk" href="https://www.google.com/maps/dir/?api=1&destination=Riserva+Naturale+Oglio+Nord&travelmode=walking" target="_blank">🚶 ניווט</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">מצוקי בון / Bogn di Zorzino – הפיורד של האגם</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">15 דק' נסיעה</span><span class="badge">הליכה קצרה מהחנייה</span></div>
+        <p>מצוקי סלע אדירים הנופלים ישר למים. "הפיורד" של אגם איזאו עם מים בצבע טורקיז משגע. מקום קסום לפיקניק, שחייה (למתקדמים – יורדים מהסלעים) ותצלומים.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Bogn+di+Zorzino+Riva+di+Solto" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Riva+di+Solto+BG+Italy&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-walk" href="https://www.google.com/maps/dir/?api=1&destination=Bogn+Zorzino+Riva+di+Solto&travelmode=walking" target="_blank">🚶 הליכה מהחנייה</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">עמק ורטובה והמפלים (Val Vertova) – "מסלול המים"</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">6–8 ק"מ הלוך-חזור</span><span class="badge">~150-200 מ' עלייה</span><span class="badge">30 דק' נסיעה</span><span class="diff easy">קל</span></div>
+        <p>אחד המסלולים היפים ביותר במחוז ברגמו. המסלול עוקב אחר נחל ורטובה – עשרות מפלים קטנים, בריכות טורקיז קרירות וגשרי עץ קטנים. הטבע עוצמתי והמים מלווים אתכם ברקע לכל אורך הצעידה.</p>
+        <div class="tip-box">💡 מומלץ נעלי הליכה עם סוליה אוחזת – הקרקע עשויה להיות לחה.</div>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Val+Vertova+Vertova+BG+Italy" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Vertova+BG+Italy&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/Cascate+Val+Vertova" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">פארק האגם בקוסטה וולפינו (Bersaglio) – ממש בבית</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">הליכה מהבית</span><span class="badge">שטוח לחלוטין</span><span class="diff easy">קל מאוד</span></div>
+        <p>הטיילת המישורית על שפת אגם איזאו. מסלול סלול ומישורי – מושלם להליכת בוקר, ריצה או רכיבה. הפארק מטופח עם מדשאות רחבות וגישה נוחה למים.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Bersaglio+Costa+Volpino+Lago+Iseo" target="_blank">📍 מפה</a>
+          <a class="btn btn-walk" href="https://www.google.com/maps/dir/?api=1&destination=Costa+Volpino+BG+lungolago&travelmode=walking" target="_blank">🚶 ניווט</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- chapter-body -->
+</div><!-- ch1 -->
+
+<!-- CH2: HIKING FAR -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">⛰️ פרק 2: הליכות טבע – כשעה נסיעה (נוף אלפיני)</div>
+  <div class="chapter-body">
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">מונטה ברונזונה – שיא מעל האגם</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~10 ק"מ</span><span class="badge">4–5 שעות</span><span class="badge">~900 מ' עלייה</span><span class="badge">1,334 מ' גובה</span><span class="badge">45 דק' נסיעה</span><span class="diff medium">בינוני</span></div>
+        <p>מסלול אלפיני לפסגת מונטה ברונזונה עם נוף מדהים על כל אגם איזאו. בפסגה – ריפוג'יו עם פולנטה מקומית. מסלול מסומן (SAC T2). יוצאים מ-Riva di Solto.</p>
+        <div class="tip-box">💡 הריפוג'יו בפסגה פתוח בסופי שבוע – הזמינו מקום מראש בקיץ.</div>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Monte+Bronzone+Riva+di+Solto" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Riva+di+Solto+BG&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/Monte+Bronzone+Iseo" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">ויה ואלריאנה – שביל רומי עתיק (קטע 3)</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">15 ק"מ</span><span class="badge">5–6 שעות</span><span class="badge">~1,090 מ' עלייה</span><span class="diff medium">בינוני</span></div>
+        <p>אחד מהשבילים היפים באיטליה – שביל רומי עתיק המהווה "מרפסת" מעל אגם איזאו. קטע 3 עובר מפילצוני לפיסוניה דרך יערות זיתים וקשטנים.</p>
+        <div class="tip-box">💡 ניתן ללכת כיוון אחד ולחזור ברכבת מפיסוניה לקוסטה וולפינו – לוגיסטיקה מושלמת!</div>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Via+Valeriana+Lago+Iseo" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Pilzone+d'Iseo+BS&travelmode=driving" target="_blank">🚗 ניווט לנקודת התחלה</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/Via+Valeriana+Iseo" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">פירמידות האדמה של זונה (Marone) – תופעה גיאולוגית</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~8 ק"מ</span><span class="badge">3–4 שעות</span><span class="badge">~700 מ' עלייה</span><span class="badge">30 דק' נסיעה</span><span class="diff medium">בינוני</span></div>
+        <p>פירמידות אדמה בגובה עד 30 מטר – תופעה גיאולוגית ייחודית! מהמארונה דרך זונה לסיסלאנו. נוף שונה מכל מה שרואים בשאר איטליה.</p>
+        <div class="tip-box">💡 הגיעו בשעות הבוקר – האור יוצר צללים דרמטיים. מצוין לצילום.</div>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Piramidi+di+Zone+Marone+BS" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Piramidi+di+Zone+Marone&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/Piramidi+di+Zone+Lago+Iseo" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">שמורת טורביירה דל סבינו – ביצות קסומות</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">4–8 ק"מ מעגלי</span><span class="badge">1–2 שעות</span><span class="badge">שטוח לחלוטין</span><span class="badge">~50 דק' נסיעה</span><span class="diff easy">קל</span></div>
+        <p>שמורת לחלחלות בעלת חשיבות בינלאומית (רשת Ramsar). נתיבי עץ מרחפים מעל מים, קנה ונתיבים מוצלים. ציפורים נדירות. נחשבת לאחד מאתרי הטבע היפים ביותר במחוז לומברדיה.</p>
+        <div class="tip-box">💡 ניתן לחזור ברכבת מתחנת Provaglio-Timoline ישירות לפיסוניה ← קוסטה וולפינו.</div>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Torbiere+del+Sebino+Provaglio+d'Iseo" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Riserva+Naturale+Torbiere+del+Sebino&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/Torbiere+del+Sebino" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">מונטה אלטו – הרי אורוביה (2,512 מ')</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~14 ק"מ</span><span class="badge">6–7 שעות</span><span class="badge">~1,400 מ' עלייה</span><span class="diff hard">מאתגר</span></div>
+        <p>מסלול ארוך ותלול בהרי האורוביה – דרך בקתות גבינה ועד פסגה אלפינית עם נוף על ואל סריאנה. מתחיל דרך ריפוג'יו מנוליני (בוסיקו).</p>
+        <div class="tip-box">💡 לינה בריפוג'יו מנוליני ממש מומלצת – יום שני בהר מתאים.</div>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Monte+Alto+Orobie+Bergamo" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Rifugio+Magnolini+Monte+Pora&travelmode=driving" target="_blank">🚗 ניווט לריפוג'יו</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/Monte+Alto+Orobie+BG" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">קורנה טרנטפאסי (Corna Trentapassi) – תצפית דרמטית</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="diff hard">מאתגר</span></div>
+        <p>מסלול מאתגר פיזית המציע את התצפית המרשימה ביותר על כל צורתו של האגם. לרוכבים מנוסים בלבד.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Corna+Trentapassi+Lago+Iseo" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Corna+Trentapassi+Pisogne&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/Corna+Trentapassi" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">מפל די וו (Cascata del Vò) – מפל 25 מטר</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">20–30 דק' הליכה לכיוון</span><span class="diff easy">קל</span></div>
+        <p>מפל יפהפה בגובה כ-25 מטרים בעמק סקאלבה, נשפך לתוך בריכה טבעית מוקפת צמחייה ירוקה עבותה.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Cascata+del+Vo+Val+Scalve" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Cascata+del+Vo+Scalve&travelmode=driving" target="_blank">🚗 ניווט</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- ch2 -->
+
+<!-- CH3: CYCLING -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">🚴 פרק 3: על גלגלים – מסלולי אופניים + רכבת</div>
+  <div class="chapter-body">
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">שביל טולינה–וולו – הכי יפה, ממש מעל המים</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~5 ק"מ לכיוון</span><span class="badge">שטוח לחלוטין</span><span class="diff easy">קל</span></div>
+        <p>כביש החוף הישן שנסגר לרכב והפך לטיילת לאופניים. רכיבה מישורית ממש על קו המים, בצמוד למצוקים ועם מנהרות קצרות. הכניסה בחינם. הנוף פתוח ומרשים.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Toline+Vello+ciclabile+Iseo" target="_blank">📍 מפה</a>
+          <a class="btn btn-bike" href="https://www.google.com/maps/dir/?api=1&destination=Vello+Marone+BS&travelmode=bicycling" target="_blank">🚴 ניווט אופניים</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Toline+Marone+BS+Italy&travelmode=driving" target="_blank">🚗 לחנייה</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/Ciclabile+Vello+Toline" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">מסלול נהר האוליו (Ciclabile dell'Oglio) – יציאה מהבית</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">מתחיל בקוסטה וולפינו</span><span class="badge">ללא עליות קשות</span><span class="diff easy">קל</span></div>
+        <p>שביל סלול ונוח המתחיל בקוסטה וולפינו וממשיך צפונה לאורך הנהר לתוך עמק קמוניקה. רכיבה בטוחה בין שדות תירס, כפרים קטנים ונוף הררי. מצוין לרכיבת בוקר רגועה.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Ciclovia+Oglio+Nord+Costa+Volpino" target="_blank">📍 מפה</a>
+          <a class="btn btn-bike" href="https://www.google.com/maps/dir/?api=1&destination=Pisogne+BS&origin=Costa+Volpino+BG&travelmode=bicycling" target="_blank">🚴 ניווט אופניים</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/Ciclovia+Oglio+Costa+Volpino" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">הקפת מונטה איסולה – אי ללא מכוניות</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~9 ק"מ היקפי</span><span class="badge">עליות מתונות</span><span class="diff easy">קל-בינוני</span></div>
+        <p>לוקחים מעבורת עם האופניים מ-Sulzano או Sale Marasino. רכיבה ציורית על כביש היקפי ללא מכוניות פרטיות, עוברים בכפרי דייגים ומטעי זיתים. אפשרות לעצור לקפה.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Monte+Isola+Lago+Iseo" target="_blank">📍 מפה מונטה איסולה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Sulzano+BS+Italy&travelmode=driving" target="_blank">🚗 לנמל סולצאנו</a>
+          <a class="btn btn-bike" href="https://www.google.com/maps/dir/?api=1&destination=Monte+Isola+BS+Italy&travelmode=bicycling" target="_blank">🚴 ניווט אופניים</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/Monte+Isola+Loop+bike" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">חצי אגם קלאסי – 35 ק"מ + רכבת חזרה</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">35 ק"מ</span><span class="badge">2–3 שעות</span><span class="badge">שטוח ברובו</span><span class="diff easy">קל</span></div>
+        <div class="sub-title">המסלול:</div>
+        <ul>
+          <li><strong>קוסטה וולפינו</strong> → פיסוניה דרך שביל האופניים של נהר אוליו, מעבר Ponte della Pace</li>
+          <li><strong>פיסוניה</strong> → שביל ולו–טולינה (4 ק"מ מעל המים) → מארונה → סולצאנו → סאלה מאראסינו</li>
+          <li><strong>איזאו</strong> → ארוחת צהריים בנמל הישן ← חזרה ברכבת לפיסוניה → קוסטה וולפינו (30 דק')</li>
+        </ul>
+        <div class="tip-box">💡 בסופי שבוע בקיץ – צאו לפני 9:00 לפני שהכביש מתמלא.</div>
+        <div class="info-box">🚂 הרכבת המקומית Trenord מותאמת לאופניים – קנו כרטיס גם לאופניים (תוספת קטנה).</div>
+        <div class="btn-row">
+          <a class="btn btn-bike" href="https://www.google.com/maps/dir/?api=1&destination=Iseo+BS+Italy&origin=Costa+Volpino+BG&travelmode=bicycling" target="_blank">🚴 ניווט אופניים</a>
+          <a class="btn btn-train" href="https://www.trenord.it" target="_blank">🚂 Trenord – לוחות זמנים</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/cycling+half+lake+Iseo" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">סיבוב מלא של האגם – 63 ק"מ</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">63 ק"מ</span><span class="badge">4–5.5 שעות</span><span class="badge">~1,200 מ' עלייה</span><span class="diff medium">בינוני</span></div>
+        <div class="sub-title">המסלול:</div>
+        <ul>
+          <li>קוסטה וולפינו → פיסוניה → מארונה → איזאו (חוף מזרחי – שטוח)</li>
+          <li>איזאו → פאראטיקו → סרניקו (חוף דרומי)</li>
+          <li>סרניקו → ריוו די סולטו → קסטרו (חוף מערבי – Orrido del Bögn: סלעים אנכיים)</li>
+          <li>לובר → קוסטה וולפינו – נוף פנורמי בחלק האחרון</li>
+        </ul>
+        <div class="tip-box">💡 השכרת אופניים חשמליים: Cycling Lake Iseo (CV) / Gringos Ebike (Lovere) – כ-40–60€ ליום.</div>
+        <div class="btn-row">
+          <a class="btn btn-bike" href="https://www.google.com/maps/dir/?api=1&destination=Iseo+BS&origin=Costa+Volpino+BG&travelmode=bicycling" target="_blank">🚴 ניווט אופניים</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/cycling+full+lake+Iseo" target="_blank">🗺️ Komoot – סיבוב מלא</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">ואל קמוניקה צפונה + רכבת חזרה מדרפו</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~40 ק"מ</span><span class="badge">2.5–3.5 שעות</span><span class="badge">עלייה הדרגתית</span><span class="diff easy">קל</span></div>
+        <div class="sub-title">המסלול:</div>
+        <ul>
+          <li>קוסטה וולפינו → Ciclovia della Valle Camonica צפונה לאורך נהר אוליו</li>
+          <li>דרפו בואריו טרמה – עיר ספא. ארוחת צהריים + בריכה תרמית (אופציונלי)</li>
+          <li>חזרה ברכבת: דרפו ← פיסוניה ← קוסטה וולפינו</li>
+        </ul>
+        <div class="tip-box">💡 ניתן לשלב עם ביקור בברשיה בדרך חזרה.</div>
+        <div class="btn-row">
+          <a class="btn btn-bike" href="https://www.google.com/maps/dir/?api=1&destination=Darfo+Boario+Terme+BS&origin=Costa+Volpino+BG&travelmode=bicycling" target="_blank">🚴 ניווט אופניים</a>
+          <a class="btn btn-train" href="https://www.trenord.it" target="_blank">🚂 Trenord</a>
+          <a class="btn btn-komoot" href="https://www.komoot.com/search/Ciclovia+Camonica+Costa+Volpino" target="_blank">🗺️ Komoot</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- ch3 -->
+
+<!-- CH4: SWIMMING -->
+<div class="chapter" id="ch4">
+  <div class="chapter-header">🏊 פרק 4: מים, חופים ושחייה</div>
+  <div class="chapter-body">
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">Lido Goia / X Beach – פיסוניה (הכי מאובזר)</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">5–10 דק' נסיעה</span><span class="badge">כניסה בתשלום</span></div>
+        <p>החוף המאובזר ביותר באזור. משלב חוף חולי (נדיר!) עם בריכת שחייה, מיטות שיזוף ומסעדה. המים נקיים ונעימים.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Lido+Goia+Pisogne+Lago+Iseo" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Lido+Goia+Pisogne&travelmode=driving" target="_blank">🚗 ניווט</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">Piscine di Lovere – בריכות מגלשות (מושלם לילדים)</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">5 דק' נסיעה</span></div>
+        <p>קומפלקס בריכות על שפת האגם עם מגלשות מים – הפתרון המושלם לילדים ולימים שרוצים סביבה מבוקרת ובטוחה.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Piscine+Lovere+Lago+Iseo" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Lovere+BG+piscina&travelmode=driving" target="_blank">🚗 ניווט</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">Baia delle Rose – החוף מתחת לבית</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">בתוך קוסטה וולפינו</span></div>
+        <p>החוף הקרוב ביותר. מצוין לשיזוף, משחק בחול ופיקניק. המים בנקודה זו פחות מומלצים לשחייה (בגלל סחף הנהר הקרוב).</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Baia+delle+Rose+Costa+Volpino" target="_blank">📍 מפה</a>
+          <a class="btn btn-walk" href="https://www.google.com/maps/dir/?api=1&destination=Costa+Volpino+spiaggia&travelmode=walking" target="_blank">🚶 הליכה מהבית</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">Bogn di Zorzino – מצוקי הטורקיז (למתקדמים)</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">15 דק' נסיעה</span><span class="badge">יורדים מסלעים</span></div>
+        <p>מפרץ פראי עם סלעי ענק הנופלים למים. אין חוף מסודר – יורדים למים מהסלעים. המים בצבע טורקיז משגע, שקופים לחלוטין.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Bogn+Zorzino+Riva+di+Solto" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Riva+di+Solto+BG&travelmode=driving" target="_blank">🚗 ניווט</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">שייט קיאקים וסאפ – לובר</div>
+      <div class="topic-content">
+        <p>במרכז הימי בלובר ניתן להשכיר ציוד לשייט רגוע בחלק הצפוני של האגם. שחייה בסביבה שקטה מהסירה. ניתן גם לשכור סירת עץ עם סקיפר לסיבוב בין הצוקים של Riva di Solto.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/kayak+canoe+Lovere+Lago+Iseo" target="_blank">📍 מרכז ימי לובר</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Marina+Lovere+BG&travelmode=driving" target="_blank">🚗 ניווט</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- ch4 -->
+
+<!-- CH5: SKI & MOUNTAINS -->
+<div class="chapter" id="ch5">
+  <div class="chapter-header">⛷️ פרק 5: הרים, שלג וסקי</div>
+  <div class="chapter-body">
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">מונטה פורה (Monte Pora) – "ההר הביתי" ⭐</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">20 דק' נסיעה</span><span class="badge">1,387–1,880 מ'</span><span class="badge">21 ק"מ מסלולים</span><span class="badge">11 מעליות</span></div>
+        <p>האתר הביתי של קוסטה וולפינו עם נוף עוצר נשימה על האגם מכל המסלולים. Pora Park לסנובורד, שלג מלאכותי, סקי לילי ביום שישי.</p>
+        <div class="sub-title">בקתות באזור:</div>
+        <ul>
+          <li><strong>Rifugio Magnolini</strong> – גובה 1,610 מ', 45 דק' הליכה מחנייה עליונה. המרפסת עם הנוף הכי יפה לאגם. ☎ 0346 65145 | rifugiomagnolini.it</li>
+          <li><strong>Rifugio Pian de la Palù</strong> – גובה 1,595 מ', 20–30 דק' הליכה. משטחי דשא לילדים. ☎ 329 5514065 | montepora.com</li>
+          <li><strong>Baita Termen</strong> – גובה 1,630 מ', 15–20 דק'. הכי נגיש, מרפסת שמש ענקית. ☎ 0346 950043</li>
+        </ul>
+        <div class="sub-title">בקיץ:</div>
+        <p>מסלולי הליכה קלים לפסגה עם תצפית עד מילאנו. הריפוג'יו Pian de la Palù – ניגש ברגל מ-CV!</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Monte+Pora+ski+BG+Italy" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Monte+Pora+Castione+della+Presolana&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-web" href="https://www.montepora.com" target="_blank">🌐 אתר Monte Pora</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">מונטה קמפיונה (Montecampione) – אתר יוקרתי</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">35 דק' נסיעה</span><span class="badge">1,200–2,000 מ'</span><span class="badge">25+ ק"מ</span><span class="badge">70+ מדריכי סקי</span></div>
+        <p>אתר יוקרתי מעל עמק קמוניקה. בימים בהירים – רואים את האגם מהפסגה! עונה: דצמבר–מרץ. מתאים מאוד למתחילים עם אזורים ייעודיים ובתי ספר לסקי.</p>
+        <div class="sub-title">בקיץ:</div>
+        <p>מסלולי הליכה מרשימים: עלייה לפסגת Monte Corniolo, מסלול ה"מאלגות" (בקתות גבינה) ומסלול פראי לכיוון Bassinale. השכרת אופניים חשמליים ב-Alpiaz.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Montecampione+ski+Valle+Camonica" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Montecampione+BS+Italy&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-web" href="https://www.montecampione.it" target="_blank">🌐 אתר Montecampione</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">פרסולנה (Presolana / Castione della Presolana)</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">35 דק' נסיעה</span><span class="badge">כרטיס משולב עם Monte Pora</span></div>
+        <p>"מלכת ההרים". אזור גדול למשפחות עם מסלולי אבובים בשלג ומזחלות, השכרת ציוד סקי ובתי ספר לגלישה. כרטיס אחד לשני הרים (Presolana + Monte Pora).</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Presolana+ski+Castione+BG" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Castione+della+Presolana+BG&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-web" href="https://www.presolana.it" target="_blank">🌐 אתר Presolana</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">קולרה – Monte Altissimo (2,178 מ')</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">40 דק' נסיעה</span><span class="badge">1,050–2,178 מ'</span><span class="badge">25 ק"מ</span><span class="badge">אתח תחרויות</span></div>
+        <p>האתר הגבוה ביותר בפרובינציה של ברגמו. מסלולים טכניים שארחו תחרויות ברמה גבוהה. מתאים לסקיינים מנוסים.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Colere+ski+Val+di+Scalve+BG" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Colere+BG+Italy&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-web" href="https://www.skicolere.it" target="_blank">🌐 אתר Colere</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">אתרי סקי גדולים – ~שעה נסיעה</div>
+      <div class="topic-content">
+        <div class="sub-title">ספיאצי די גרומו (~55 דק') – למשפחות</div>
+        <p>אתר קטן ואינטימי. בית ספר לסקי, שלג טובינג ומגלשות לילדים. ~12 ק"מ מסלולים.</p>
+        <div class="sub-title">Brembo Ski / פופולו–קרונה–סן סימונה (~65 דק') – הגדול בברגמו</div>
+        <p>50+ ק"מ, 18 מעליות, 3 אזורים מחוברים. אפרה-סקי תוסס.</p>
+        <div class="sub-title">פיאני די בוביו (~65 דק') – #1 בברגמו</div>
+        <p>35 ק"מ, עד 2,178 מ'. צד Barzio (כחול/אדום) וצד Valtorta (שחור עם מסלול Tre Signori).</p>
+        <div class="sub-title">שילפריו (Schilpario) (~70 דק')</div>
+        <p>גונדולה מודרנית ל-2,150 מ'. Fan Park לסנובורד. כדאי לשלב עם בריכות תרמיות Boario Terme בדרך חזרה.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Piani+di+Bobbio+ski+Val+Brembana" target="_blank">📍 פיאני די בוביו</a>
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Brembo+Ski+Val+Brembana" target="_blank">📍 Brembo Ski</a>
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Schilpario+ski+Val+di+Scalve" target="_blank">📍 שילפריו</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">קרחון פרסנה + פונטה די לניו / טונאלה (3,000 מ')</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~70 דק' נסיעה</span><span class="badge">שלג גם בקיץ</span></div>
+        <p>עלייה ברכבל לקרחון Presena בגובה 3,000 מ' – נוף 360° דרמטי ושלג כל השנה! עיירת יוקרה Ponte di Legno עם מדרחוב יפה.</p>
+        <div class="info-box">🍽️ המלצה קולינרית: מסעדת Il Ceppo (יוקרה כפרית) / Capanna Valbione (על אגם קטן בהר).</div>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Ghiacciaio+Presena+Ponte+di+Legno" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Ponte+di+Legno+BS+Italy&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-web" href="https://www.presena.it" target="_blank">🌐 קרחון פרסנה</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- ch5 -->
+
+<!-- CH6: SPA -->
+<div class="chapter" id="ch6">
+  <div class="chapter-header">♨️ פרק 6: ספא ומעיינות חמים</div>
+  <div class="chapter-body">
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">Terme di Boario – הקרוב ביותר (10–15 דק')</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">10–15 דק' נסיעה</span></div>
+        <p>ספא היסטורי ומודרני כאחד. בריכות תרמיות מקורות, סאונות, חדרי מלח ומסלול הליכה במים (Kneipp). מושלם לערב מפנק אחרי יום עמוס.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Terme+Boario+Darfo+Boario+Terme" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Terme+di+Boario+Darfo&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-web" href="https://www.termediboario.it" target="_blank">🌐 אתר Terme di Boario</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">QC Terme San Pellegrino – הספא היוקרתי</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~50 דק' נסיעה</span></div>
+        <p>אחד מאתרי הספא המפורסמים באיטליה, בתוך ארמון עתיק. בריכות חיצוניות חמות מול ההרים, אולמות שיש מפוארים וארוחות בופה בריאות (Aperiterme). חוויית "החיים הטובים" במלוא מובן המילה.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/QC+Terme+San+Pellegrino+BG" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=QC+Terme+San+Pellegrino+Terme+BG&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-web" href="https://www.qcterme.com/it/san-pellegrino" target="_blank">🌐 אתר QC Terme</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">Aquaria Thermal SPA – סירמיונה על אגם גארדה</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~75 דק' נסיעה</span></div>
+        <p>בריכה חיצונית גדולה עם מים תרמיים הצופה ישירות על אגם גארדה. מומלץ במיוחד בשקיעה. ניתן לשלב עם טיול בסירמיונה.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Aquaria+Thermal+Spa+Sirmione" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Aquaria+Sirmione+BS&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-web" href="https://www.termesirmione.com" target="_blank">🌐 אתר</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- ch6 -->
+
+<!-- CH7: DAY TRIPS -->
+<div class="chapter" id="ch7">
+  <div class="chapter-header">🗺️ פרק 7: טיולי יום מרוחקים</div>
+  <div class="chapter-body">
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">אגם גארדה – סירמיונה + GARDALAND</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~75 דק' נסיעה</span></div>
+        <p>סיור בעיר העתיקה של סירמיונה (מצודה על המים), שיט בסירת מרוץ סביב חצי האי, וגלידה איטלקית משובחת. GARDALAND – פארק שעשועים ואטרקציות לכל המשפחה.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Sirmione+Lago+di+Garda" target="_blank">📍 סירמיונה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Sirmione+BS+Italy&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-web" href="https://www.gardaland.it" target="_blank">🌐 GARDALAND</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">רכבת הטעמים (Treno dei Sapori) – חובה להזמין!</div>
+      <div class="topic-content">
+        <p>נסיעה בקרונות וינטג' כתומים לאורך אגם איזאו, תוך כדי ארוחת טעימות מלאה של גבינות, נקניקים ויינות מקומיים. הרכבת יוצאת מתחנת Iseo.</p>
+        <div class="warn-box">⚠️ חובה להזמין מקום מראש!</div>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Stazione+Iseo+BS" target="_blank">📍 תחנת איזאו</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Iseo+BS+stazione&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-web" href="https://www.trenodeisapori.it" target="_blank">🌐 הזמנת מקום</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">הרכבת האדומה – Bernina Express (שוויץ!)</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~90 דק' נסיעה לטיראנו</span></div>
+        <p>אחת הרכבות הנופיות היפות בעולם, החוצה את האלפים המושלגים ומגיעה לשוויץ (St. Moritz). מומלץ בחורף לנופי שלג ובקיץ לנופים ירוקים.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Tirano+SO+stazione+ferrovia" target="_blank">📍 תחנת טיראנו</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Tirano+SO+Italy&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-web" href="https://www.rhb.ch/en/panoramic-trains/bernina-express" target="_blank">🌐 Bernina Express</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- ch7 -->
+
+<!-- CH8: SHOPPING & FOOD -->
+<div class="chapter" id="ch8">
+  <div class="chapter-header">🛒 פרק 8: קניות וקולינריה</div>
+  <div class="chapter-body">
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">סופרמרקטים – היכן לקנות</div>
+      <div class="topic-content">
+        <ul>
+          <li><strong>Iperal (רוגנו)</strong> – הגדול, המגוון והנוח ביותר. מחירים טובים, מבחר גבינות ובשרים. פתוח רצוף.</li>
+          <li><strong>Italmark (פיזונייה)</strong> – איכותי מאוד, דגש על ירקות ופירות מעולים ומוצרים מקומיים.</li>
+          <li><strong>Lidl / Eurospin</strong> – דיסקאונט מצוין לקנייה בסיסית.</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Iperal+Rogno+BG" target="_blank">📍 Iperal רוגנו</a>
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Italmark+Pisogne+BS" target="_blank">📍 Italmark פיזונייה</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">שווקים שבועיים – טריות מהמקור</div>
+      <div class="topic-content">
+        <ul>
+          <li><strong>קוסטה וולפינו</strong> – ימי רביעי בבוקר, Piazzale degli Alpini (הליכה מהבית)</li>
+          <li><strong>לוברה</strong> – ימי שבת בבוקר, Piazza XIII Martiri (על הטיילת) – גבינות מקומיות ודגים מעושנים</li>
+          <li><strong>פיזונייה</strong> – ימי שישי בבוקר, Piazza Mercato – שוק גדול עם יצרני מזון מהעמק</li>
+          <li><strong>איסאו</strong> – ימי שישי בבוקר – השוק הגדול ביותר באגם</li>
+          <li><strong>שוק איכרים איסאו</strong> – יום ראשון השלישי של כל חודש</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">מוצרים מקומיים – גבינות, שמן ודגים</div>
+      <div class="topic-content">
+        <div class="sub-title">גבינות Silter DOP:</div>
+        <ul>
+          <li><strong>CISSVA (פיזונייה)</strong> – חנות המפעל, מחירים מצחיקים ואיכות גבוהה. מתנות מעולות הביתה!</li>
+          <li><strong>Gastronomia Castellani (קוסטה וולפינו)</strong> – Via Nazionale 207 – מעדנייה מקומית</li>
+          <li><strong>Azienda Agricola Spandre Vittorio (פיזונייה)</strong> – משק משפחתי לביקור וקנייה</li>
+        </ul>
+        <div class="sub-title">שמן זית Olio del Sebino:</div>
+        <ul>
+          <li><strong>Frantoio del Sebino (סולצאנו)</strong> – 15–20 דק' נסיעה. בית בד עם חנות מפעל לטעימה ורכישה.</li>
+        </ul>
+        <div class="sub-title">דגי אגם:</div>
+        <ul>
+          <li><strong>Pescheria Turla (סולצאנו)</strong> – דגי אגם טריים ומעובדים</li>
+          <li>שוק שבת בלוברה – דייגים עם סרדינים מ-Monte Isola</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/CISSVA+formaggi+Pisogne" target="_blank">📍 CISSVA</a>
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Frantoio+del+Sebino+Sulzano" target="_blank">📍 בית הבד</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">מסעדות מומלצות</div>
+      <div class="topic-content">
+        <ul>
+          <li><strong>Trattoria del Pescatore (Monte Isola)</strong> – על האי. מנה חובה: סרדינים מיובשים על פולנטה חמה עם נוף למים.</li>
+          <li><strong>Ristorante Naé (Iseo)</strong> – דגי אגם ומנות צמחוניות יצירתיות עם תצפית לשקיעה.</li>
+          <li><strong>Bella Iseo (Iseo)</strong> – תפריט דגים עשיר ופסטות קלאסיות מול נוף פנורמי.</li>
+          <li><strong>Pinocchio (Lovere)</strong> – פיצרייה עם גבינות מקומיות ופסטות עם ירקות.</li>
+          <li><strong>Biscotteria Forneria Rinaldi (קוסטה וולפינו)</strong> – מאפייה מקומית ללחמים ועוגיות מסורתיות.</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Trattoria+del+Pescatore+Monte+Isola" target="_blank">📍 Trattoria del Pescatore</a>
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Ristorante+Nae+Iseo" target="_blank">📍 Naé Iseo</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">קניות ומותגים – Outlet ו-Orio Center</div>
+      <div class="topic-content">
+        <div class="sub-title">Franciacorta Outlet Village (~35 דק'):</div>
+        <p>כפר קניות פתוח ומעוצב עם 30–70% הנחה. מומלצים: Nike, Adidas, Timberland, The North Face, Bialetti, Lindt. בקשו "Village Card" בכניסה לתיירים – 10% נוסף.</p>
+        <div class="sub-title">Orio Center (~50 דק') – קניון ענק ליד ברגמו:</div>
+        <p>Primark (זול בטירוף לבגדי ילדים), Lego Store, Apple Store, Disney Store. מושלם לימים גשומים.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Franciacorta+Outlet+Village+BS" target="_blank">📍 Franciacorta Outlet</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Franciacorta+Outlet+Village&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Orio+Center+Bergamo" target="_blank">📍 Orio Center</a>
+          <a class="btn btn-web" href="https://www.franciacortaoutlet.it" target="_blank">🌐 אתר Outlet</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- ch8 -->
+
+<!-- CH9: FAMILY -->
+<div class="chapter" id="ch9">
+  <div class="chapter-header">👨‍👩‍👧 פרק 9: משפחה, ילדים ואטרקציות</div>
+  <div class="chapter-body">
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">פרויקט הספסלים הענקיים (Big Benches) 🪑</div>
+      <div class="topic-content">
+        <p>ספסלי ענק צבעוניים בנקודות תצפית מרהיבות. ילדים (וגם מבוגרים) אוהבים!</p>
+        <ul>
+          <li><strong>ספסל רוגנו (כחול)</strong> – קרוב מאוד לקוסטה וולפינו</li>
+          <li><strong>ספסל פונטנו (ירוק)</strong> – תצפית על "הצוקים הנופלים"</li>
+          <li><strong>ספסל פילזונה ד'איזאו (ירוק כהה)</strong> – ב-San Fermo, תצפית מרשימה על מונטה איסולה</li>
+          <li>ספסלים נוספים: דארפו, סאלה מרזינו (כתום), לוציו (ירוק ים), בורנו (צהוב)</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Big+Benches+Lago+Iseo" target="_blank">📍 מפה</a>
+          <a class="btn btn-web" href="https://www.bigbench.it" target="_blank">🌐 אתר Big Benches</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">היער המכושף (Bosco Incantato) – מסלול אגדות</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~3 ק"מ מעגלי</span><span class="badge">שטוח</span><span class="badge">קרוב ל-Monte Pora</span></div>
+        <p>מסלול אגדות קסום בתוך יער ביער Passo Vareno (דקה מ-Monte Pora). לאורך השביל פזורים פסלי עץ של יצורים מיתולוגיים, גמדים ופיות. מוצל ונעים מאוד בימים חמים.</p>
+        <div class="tip-box">💡 ליד האגם הקטן בתחילת המסלול (Laghetto del Vareno) – שולחנות פיקניק מסודרים.</div>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Bosco+Incantato+Passo+Vareno+Monte+Pora" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Passo+Vareno+Monte+Pora+BG&travelmode=driving" target="_blank">🚗 ניווט</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">פירמידות האדמה – יער הגמדים (Bosco degli Gnomi)</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">30 דק' נסיעה</span></div>
+        <p>בנוסף למסלול הפירמידות הגיאולוגיות – "יער הגמדים" (Bosco degli Gnomi): מסלול קליל עם פסלי עץ, מתאים לקטנים. עולים מהעיירה Marone.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Piramidi+di+Zone+Marone+Bosco+Gnomi" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Marone+BS+Italy&travelmode=driving" target="_blank">🚗 ניווט</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">Archeopark – כפר פרהיסטורי (בואריו טרמה)</div>
+      <div class="topic-content">
+        <div class="badge-row"><span class="badge">~15 דק' נסיעה</span></div>
+        <p>מוזיאון פתוח המשחזר כפר פרהיסטורי. הילדים מתנסים בירי חץ וקשת, שייט ברפסודות עץ באגם מלאכותי ולומדים איך חיו אנשי המערות.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Archeopark+Boario+Terme" target="_blank">📍 מפה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Archeopark+Darfo+Boario+Terme&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-web" href="https://www.archeopark.it" target="_blank">🌐 אתר Archeopark</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">פארק לוברה + מדשאות האגם (קוסטה וולפינו)</div>
+      <div class="topic-content">
+        <ul>
+          <li><strong>פארק לוברה</strong> – מול המרינה החדשה. מתקנים מודרניים, רצפת גומי בטוחה, בית קפה להורים.</li>
+          <li><strong>פארק האגם בקוסטה וולפינו</strong> – מדשאות ענק, מתקנים מעץ, שבילי אופניים ואכלת ברווזים.</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/parco+giochi+Lovere+BG" target="_blank">📍 פארק לוברה</a>
+          <a class="btn btn-map" href="https://www.google.com/maps/search/parco+lago+Costa+Volpino" target="_blank">📍 פארק קוסטה וולפינו</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- ch9 -->
+
+<!-- CH10: FESTIVALS -->
+<div class="chapter" id="ch10">
+  <div class="chapter-header">🎪 פרק 10: פסטיבלים ואירועים</div>
+  <div class="chapter-body">
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">הלילה הרומנטי (Notte Romantica) – לובר (סוף יוני)</div>
+      <div class="topic-content">
+        <p>העיירה מכבה את האורות ומוארת באלפי נרות, עם הופעות רחוב וזיקוקים. אחד האירועים הרומנטיים ביותר בלומברדיה.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Lovere+BG+centro+storico" target="_blank">📍 מרכז לובר</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Lovere+BG+Italy&travelmode=driving" target="_blank">🚗 ניווט</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">פסטיבל אומני הרחוב (Sarnico Busker Festival) – סוף יולי</div>
+      <div class="topic-content">
+        <p>לוליינים, להטוטנים ומוזיקאים מכל העולם ממלאים את רחובות סרניקו. חובה עם ילדים ונכדים!</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Sarnico+BG+Italy" target="_blank">📍 סרניקו</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Sarnico+BG+Italy&travelmode=driving" target="_blank">🚗 ניווט</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">יריד הפרחים (Franciacorta in Fiore) – מאי</div>
+      <div class="topic-content">
+        <p>יקבים ואחוזות פותחים את הגנים לתצוגות פרחים מרהיבות וטעימות יין. חוויה יפהפייה של האביב האיטלקי.</p>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Franciacorta+BS+Italy" target="_blank">📍 פרנצ'יקורטה</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Franciacorta+Erbusco+BS&travelmode=driving" target="_blank">🚗 ניווט</a>
+          <a class="btn btn-web" href="https://www.franciacortainfiore.it" target="_blank">🌐 אתר</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <div class="topic-header" onclick="toggleTopic(this)">שוקי חג המולד – דצמבר ❄️</div>
+      <div class="topic-content">
+        <ul>
+          <li><strong>לובר</strong> – הקרנות אורות אומנותיות על בניינים עתיקים. מפורסמת ביופייה.</li>
+          <li><strong>ביאנו (Bienno)</strong> – כפר עתיק ושמור המתהפך לשוק חג מולד קסום. אחד הכפרים היפים באיטליה.</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Lovere+mercatino+natale" target="_blank">📍 שוק לובר</a>
+          <a class="btn btn-map" href="https://www.google.com/maps/search/Bienno+BS+Italy+mercatino" target="_blank">📍 שוק ביאנו</a>
+          <a class="btn btn-drive" href="https://www.google.com/maps/dir/?api=1&destination=Bienno+BS+Italy&travelmode=driving" target="_blank">🚗 לביאנו</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- ch10 -->
+
+</div><!-- chapters -->
+
+<footer>
+  <p>המדריך הדיגיטלי של רינה ומוטי לזר · קוסטה וולפינו, אגם איזאו, לומברדיה 🇮🇹</p>
+  <p>נבנה מתוך אהבה לאזור הרגוע והיפהפה הזה</p>
+</footer>
+
+<script>
+function toggleTopic(header) {
+  header.classList.toggle('active');
+  header.nextElementSibling.classList.toggle('open');
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      const top = target.getBoundingClientRect().top + window.scrollY - 16;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>
