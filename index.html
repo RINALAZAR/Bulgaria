@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בולגריה 2024 - מדריך טיול אינטראקטיבי</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f5f2ee;
+            color: #2c2c2c;
+            direction: rtl;
+        }
+
+        /* ===== HEADER ===== */
+        .site-header {
+            background: linear-gradient(135deg, #1a3a1e 0%, #2c5530 60%, #4a90a4 100%);
+            color: white;
+            padding: 50px 20px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .site-header::before {
+            content: '🏔️';
+            position: absolute;
+            font-size: 260px;
+            opacity: 0.04;
+            top: -50px;
+            right: -30px;
+            pointer-events: none;
+        }
+        .site-header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+        }
+        .site-header .subtitle {
+            font-size: 1.15rem;
+            opacity: 0.9;
+            margin-bottom: 12px;
+        }
+        .date-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 20px;
+            padding: 6px 18px;
+            font-size: 0.95rem;
+        }
+
+        /* ===== TABLE OF CONTENTS ===== */
+        .toc-section {
+            max-width: 960px;
+            margin: 35px auto 10px;
+            padding: 0 20px;
+        }
+        .toc-title {
+            font-size: 1.9rem;
+            color: #2c5530;
+            text-align: center;
+            border-bottom: 3px solid #c9a84c;
+            padding-bottom: 12px;
+            margin-bottom: 22px;
+        }
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+        }
+        .toc-card {
+            background: white;
+            border-radius: 13px;
+            padding: 16px 18px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            transition: all 0.25s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+        }
+        .toc-card:hover {
+            border-color: #2c5530;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 22px rgba(44,85,48,0.18);
+        }
+        .toc-card .card-icon { font-size: 2rem; flex-shrink: 0; line-height: 1; }
+        .toc-card .card-text .num { font-size: 0.75rem; color: #4a90a4; font-weight: 700; text-transform: uppercase; }
+        .toc-card .card-text h3 { font-size: 0.97rem; color: #2c5530; margin: 3px 0; line-height: 1.35; }
+        .toc-card .card-text .date { font-size: 0.78rem; color: #999; }
+
+        /* ===== CHAPTERS ===== */
+        .chapters-container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 10px 20px 70px;
+        }
+        .chapter {
+            margin-bottom: 28px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 3px 18px rgba(0,0,0,0.09);
+        }
+        .chapter-header {
+            background: linear-gradient(135deg, #2c5530, #4a90a4);
+            color: white;
+            padding: 20px 26px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .chapter-header.warn-header { background: linear-gradient(135deg, #7b4000, #c9a84c); }
+        .chapter-header .ch-icon { font-size: 2.1rem; }
+        .chapter-header h2 { font-size: 1.35rem; }
+        .chapter-header .ch-sub { font-size: 0.85rem; opacity: 0.88; margin-top: 3px; }
+        .chapter-body { background: white; padding: 18px 20px; }
+
+        /* ===== ACCORDION TOPICS ===== */
+        .topic {
+            border: 1px solid #e8e4dc;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .topic-header {
+            padding: 13px 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9f7f4;
+            transition: background 0.18s;
+            user-select: none;
+        }
+        .topic-header:hover { background: #f0ede6; }
+        .topic-header.active { background: #edf5ee; }
+        .topic-header h3 {
+            font-size: 0.98rem;
+            color: #2c5530;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .topic-arrow {
+            color: #4a90a4;
+            font-size: 0.75rem;
+            transition: transform 0.28s;
+            flex-shrink: 0;
+        }
+        .topic-header.active .topic-arrow { transform: rotate(180deg); }
+        .topic-content {
+            display: none;
+            padding: 16px 18px 18px;
+            background: white;
+            border-top: 1px solid #e8e4dc;
+        }
+        .topic-content.open { display: block; }
+        .topic-content p { line-height: 1.75; color: #444; margin-bottom: 10px; }
+        .topic-content ul { margin: 8px 0 12px 0; padding-right: 22px; }
+        .topic-content ul li { margin-bottom: 6px; line-height: 1.65; color: #444; }
+
+        /* ===== HIKE STATS ===== */
+        .hike-stats {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 12px 0;
+            align-items: center;
+        }
+        .stat-badge {
+            background: #edf5ee;
+            border: 1px solid #2c5530;
+            border-radius: 8px;
+            padding: 5px 11px;
+            font-size: 0.82rem;
+            color: #2c5530;
+        }
+        .difficulty {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .easy   { background: #c8e6c9; color: #1b5e20; }
+        .medium { background: #fff3e0; color: #e65100; }
+        .hard   { background: #ffcdd2; color: #b71c1c; }
+
+        /* ===== INFO BOXES ===== */
+        .info-box    { background: #fff8e1; border-right: 4px solid #c9a84c; border-radius: 8px; padding: 11px 14px; margin: 11px 0; font-size: 0.88rem; line-height: 1.6; }
+        .warning-box { background: #fff3f3; border-right: 4px solid #e53935; border-radius: 8px; padding: 11px 14px; margin: 11px 0; font-size: 0.88rem; line-height: 1.6; }
+        .tip-box     { background: #e8f5e9; border-right: 4px solid #2c5530;  border-radius: 8px; padding: 11px 14px; margin: 11px 0; font-size: 0.88rem; line-height: 1.6; }
+
+        /* ===== MAP BUTTONS ===== */
+        .map-buttons { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+        .map-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 700;
+            transition: all 0.18s;
+            cursor: pointer;
+        }
+        .map-btn:hover { opacity: 0.82; transform: translateY(-2px); }
+        .btn-map   { background: #4285f4; color: white; }
+        .btn-walk  { background: #2c5530; color: white; }
+        .btn-bike  { background: #c9a84c; color: white; }
+        .btn-drive { background: #4a90a4; color: white; }
+        .btn-trail { background: #8B4513; color: white; }
+        .btn-web   { background: #9c27b0; color: white; }
+
+        /* ===== PLACE CARDS ===== */
+        .place-card {
+            background: #f9f7f4;
+            border-radius: 10px;
+            padding: 13px 15px;
+            margin: 10px 0;
+            border: 1px solid #e8e4dc;
+        }
+        .place-card h4 { color: #2c5530; margin-bottom: 5px; font-size: 0.95rem; }
+
+        /* ===== BACK TO TOP ===== */
+        .back-to-top {
+            display: block;
+            text-align: center;
+            margin-top: 14px;
+            color: #4a90a4;
+            text-decoration: none;
+            font-size: 0.83rem;
+        }
+        .back-to-top:hover { text-decoration: underline; }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #2c5530;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        footer p { margin-bottom: 5px; }
+        footer a { color: #c9a84c; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .site-header h1 { font-size: 1.9rem; }
+            .toc-grid { grid-template-columns: 1fr 1fr; }
+            .chapter-header h2 { font-size: 1.1rem; }
+            .map-buttons { gap: 6px; }
+        }
+        @media (max-width: 380px) {
+            .toc-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site-header">
+    <h1>🏔️ בולגריה 2024</h1>
+    <p class="subtitle">מדריך טיול אינטראקטיבי · הרי פירין ורילה</p>
+    <div class="date-badge">24 יוני – 3 יולי 2024</div>
+</header>
+
+<!-- ===================== TOC ===================== -->
+<section class="toc-section" id="top">
+    <h2 class="toc-title">📋 תוכן עניינים</h2>
+    <div class="toc-grid">
+
+        <a href="#ch1" class="toc-card">
+            <span class="card-icon">🏘️</span>
+            <div class="card-text">
+                <div class="num">פרק 1</div>
+                <h3>בנסקו – העיר</h3>
+                <div class="date">24–27.6</div>
+            </div>
+        </a>
+
+        <a href="#ch2" class="toc-card">
+            <span class="card-icon">🚡</span>
+            <div class="card-text">
+                <div class="num">פרק 2</div>
+                <h3>רכבל לבזבוג – הרי פירין</h3>
+                <div class="date">25.6</div>
+            </div>
+        </a>
+
+        <a href="#ch3" class="toc-card">
+            <span class="card-icon">⛰️</span>
+            <div class="card-text">
+                <div class="num">פרק 3</div>
+                <h3>בקתת ויהרן, אגם אקוטו, העץ העתיק</h3>
+                <div class="date">26.6</div>
+            </div>
+        </a>
+
+        <a href="#ch4" class="toc-card">
+            <span class="card-icon">🏔️</span>
+            <div class="card-text">
+                <div class="num">פרק 4</div>
+                <h3>פסגת ויהרן ואגמי בנדרישקי</h3>
+                <div class="date">הרי פירין</div>
+            </div>
+        </a>
+
+        <a href="#ch5" class="toc-card">
+            <span class="card-icon">⛪</span>
+            <div class="card-text">
+                <div class="num">פרק 5</div>
+                <h3>מנזר רילה ומפלי סקאקוויצה</h3>
+                <div class="date">27.6</div>
+            </div>
+        </a>
+
+        <a href="#ch6" class="toc-card">
+            <span class="card-icon">🌉</span>
+            <div class="card-text">
+                <div class="num">פרק 6</div>
+                <h3>אקו-טריל הגשרים</h3>
+                <div class="date">28.6</div>
+            </div>
+        </a>
+
+        <a href="#ch7" class="toc-card">
+            <span class="card-icon">♨️</span>
+            <div class="card-text">
+                <div class="num">פרק 7</div>
+                <h3>ספא ומעיינות חמים</h3>
+                <div class="date">28.6</div>
+            </div>
+        </a>
+
+        <a href="#ch8" class="toc-card">
+            <span class="card-icon">🏔️</span>
+            <div class="card-text">
+                <div class="num">פרק 8</div>
+                <h3>הר מוסלה</h3>
+                <div class="date">29.6</div>
+            </div>
+        </a>
+
+        <a href="#ch9" class="toc-card">
+            <span class="card-icon">🏞️</span>
+            <div class="card-text">
+                <div class="num">פרק 9</div>
+                <h3>שבעת אגמי רילה</h3>
+                <div class="date">30.6</div>
+            </div>
+        </a>
+
+        <a href="#ch10" class="toc-card">
+            <span class="card-icon">🌿</span>
+            <div class="card-text">
+                <div class="num">פרק 10</div>
+                <h3>הר ויטושה וגשרי הזהב</h3>
+                <div class="date">1.7</div>
+            </div>
+        </a>
+
+        <a href="#ch11" class="toc-card">
+            <span class="card-icon">🏛️</span>
+            <div class="card-text">
+                <div class="num">פרק 11</div>
+                <h3>סופיה</h3>
+                <div class="date">2–3.7</div>
+            </div>
+        </a>
+
+        <a href="#ch12" class="toc-card">
+            <span class="card-icon">🎨</span>
+            <div class="card-text">
+                <div class="num">פרק 12</div>
+                <h3>פלובדיב וסביבה</h3>
+                <div class="date">כללי</div>
+            </div>
+        </a>
+
+        <a href="#ch13" class="toc-card">
+            <span class="card-icon">🏙️</span>
+            <div class="card-text">
+                <div class="num">פרק 13</div>
+                <h3>סמוקוב ואגם בטאק</h3>
+                <div class="date">כללי</div>
+            </div>
+        </a>
+
+        <a href="#ch14" class="toc-card">
+            <span class="card-icon">🚗</span>
+            <div class="card-text">
+                <div class="num">פרק 14</div>
+                <h3>טיפים – רכב ונסיעה</h3>
+                <div class="date">⚠️ חשוב!</div>
+            </div>
+        </a>
+
+    </div>
+</section>
+
+<!-- ===================== CHAPTERS ===================== -->
+<div class="chapters-container">
+
+    <!-- ===== CH 1: BANSKO ===== -->
+    <div class="chapter" id="ch1">
+        <div class="chapter-header">
+            <span class="ch-icon">🏘️</span>
+            <div>
+                <h2>פרק 1: בנסקו – העיר</h2>
+                <div class="ch-sub">24–27 יוני · Bansko · בסיס ההרים של הרי פירין</div>
+            </div>
+        </div>
+        <div class="chapter-body">
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🏰 טיול בעיר העתיקה</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>בנסקו היא עיר יפהפייה עם בתים עתיקים וסמטאות קסומות. כדאי לטייל הן במרכז הרחוב הראשי (מדרחוב) והן מחוץ למרכז – הסמטאות היפות מחוץ לאזור המרכזי שוות לא פחות!</p>
+                    <ul>
+                        <li>🏠 בתים עתיקים ורחובות ציוריים</li>
+                        <li>🚶 המדרחוב הראשי – מהמלון נוסעים כ-1.5 ק"מ לכיוון מטה</li>
+                        <li>🅿️ חפשו חניה ללא תשלום</li>
+                        <li>❄️ שימו לב: מלונות רבים ללא מזגן – אפשר לבקש מאוורר</li>
+                    </ul>
+                    <div class="tip-box">💡 <strong>טיפ:</strong> בנסקו מאוד יפה וכדאי לטייל גם מחוץ למרכז – צאו לחקור את הסמטאות!</div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Bansko+Old+Town+Bulgaria" target="_blank" class="map-btn btn-map">📍 מפה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Bansko+Old+Town+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט הליכה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Bansko+Old+Town+Bulgaria&travelmode=bicycling" target="_blank" class="map-btn btn-bike">🚲 ניווט אופניים</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🏨 מלונות מומלצים בבנסקו</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <div class="place-card">
+                        <h4>🏨 Hotel Saint George Palace</h4>
+                        <p>מלון מומלץ בבנסקו, קרוב לעיר העתיקה ולאזור ההרים.</p>
+                        <div class="map-buttons">
+                            <a href="https://maps.google.com/?q=Saint+George+Palace+Hotel+Bansko+Bulgaria" target="_blank" class="map-btn btn-map">📍 מפה</a>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=Saint+George+Palace+Hotel+Bansko+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                        </div>
+                    </div>
+                    <div class="place-card">
+                        <h4>🏨 Hotel Rahoff</h4>
+                        <p>מלון כולל ארוחת בוקר, אופציה נוספת לשהייה בבנסקו.</p>
+                        <div class="map-buttons">
+                            <a href="https://maps.google.com/?q=Hotel+Rahoff+Bansko+Bulgaria" target="_blank" class="map-btn btn-map">📍 מפה</a>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=Hotel+Rahoff+Bansko+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🍽️ מסעדות מומלצות בבנסקו</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <div class="place-card">
+                        <h4>🍝 Casa di Papi</h4>
+                        <p>מסעדה מעולה על הנהר עם תפריט מגוון. אוכל טעים ולא יקר! מומלץ מאוד.</p>
+                        <div class="map-buttons">
+                            <a href="https://maps.google.com/?q=Casa+di+Papi+Bansko+Bulgaria" target="_blank" class="map-btn btn-map">📍 מפה</a>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=Casa+di+Papi+Bansko+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט הליכה</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🗼 מגדל רזלוג (Razlog Tower)</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>מגדל תצפית עם 337 מדרגות, המציע נוף מרהיב על העמק. הליכה יפה לאורך הרכס.</p>
+                    <div class="hike-stats">
+                        <div class="stat-badge">🪜 337 מדרגות</div>
+                        <div class="stat-badge">👁️ תצפית על העמק</div>
+                    </div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Razlog+Tower+Bulgaria" target="_blank" class="map-btn btn-map">📍 מגדל רזלוג</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Razlog+Tower+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Razlog+Tower+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 הליכה</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ חזרה לתוכן עניינים</a>
+        </div>
+    </div>
+
+    <!-- ===== CH 2: BEZBOG ===== -->
+    <div class="chapter" id="ch2">
+        <div class="chapter-header">
+            <span class="ch-icon">🚡</span>
+            <div>
+                <h2>פרק 2: רכבל לבזבוג – הרי פירין</h2>
+                <div class="ch-sub">25 יוני · Dobrinishte Resort → Bezbog Hut · פסגת פולז'אן</div>
+            </div>
+        </div>
+        <div class="chapter-body">
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🚡 רכבל מדוברינישטה לבקתת בזבוג</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>נסיעה לאתר הנופש דוברינישטה (Dobrinishte resort) – כ-40 דקות מבנסקו. משם עולים ברכבל סקי-ישיבה לבקתת בזבוג (Bezbog Hut) בגובה 2,470 מטר.</p>
+                    <div class="info-box">ℹ️ <strong>שימו לב:</strong> כרטיס הרכבל אינו כלול בחבילות הטיול – יש לרכוש עצמאית במקום.</div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Dobrinishte+ski+resort+Bulgaria" target="_blank" class="map-btn btn-map">📍 דוברינישטה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Dobrinishte+resort+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט לדוברינישטה</a>
+                        <a href="https://maps.google.com/?q=Bezbog+Hut+Pirin+Bulgaria" target="_blank" class="map-btn btn-map">📍 בקתת בזבוג</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>⛰️ פסגת פולז'אן (Polezhan) – 17 אגמים</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>מבקתת בזבוג מתחיל מסלול ההליכה לפסגת פולז'אן – הנוף היפה ביותר של הרי פירין. מהפסגה ניתן לראות כ-17 אגמים קפואים, כולל אגם פופובו (Popovo Lake) שעומקו כ-130 מטר!</p>
+                    <div class="hike-stats">
+                        <span class="difficulty medium">קושי: בינוני-קל</span>
+                        <div class="stat-badge">📏 7 ק"מ</div>
+                        <div class="stat-badge">⬆️⬇️ 770 מ'</div>
+                        <div class="stat-badge">🏔️ פסגה #5 בפירין</div>
+                    </div>
+                    <p>פולז'אן היא הפסגה החמישית בגובהה בהרי פירין. מסביבה 3 קרקסים עם 3 קבוצות אגמים:</p>
+                    <ul>
+                        <li>🔵 אגמי דיסילישקי (Disilishki) – צפון</li>
+                        <li>🔵 אגמי פולז'נסקי (Polezhanski) – דרום</li>
+                        <li>🔵 אגמי שטראז'ישקי (Strazhishki) – מערב</li>
+                    </ul>
+                    <div class="tip-box">💡 יום הליכה קל יחסית – רוב המסלול על כביש, מלבד 15 דקות טיפוס אל הפסגה.</div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Polezhan+Peak+Pirin+Bulgaria" target="_blank" class="map-btn btn-map">📍 פסגת פולז'אן</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Polezhan+peak+Pirin+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט הליכה</a>
+                        <a href="https://www.alltrails.com/explore?q=Polezhan+Bulgaria" target="_blank" class="map-btn btn-trail">🥾 AllTrails</a>
+                        <a href="https://www.komoot.com/explore/region/1074" target="_blank" class="map-btn btn-trail">🗺️ Komoot</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ חזרה לתוכן עניינים</a>
+        </div>
+    </div>
+
+    <!-- ===== CH 3: VIHREN HUT / OKOTO LAKE ===== -->
+    <div class="chapter" id="ch3">
+        <div class="chapter-header">
+            <span class="ch-icon">⛰️</span>
+            <div>
+                <h2>פרק 3: בקתת ויהרן, אגם אקוטו, העץ העתיק</h2>
+                <div class="ch-sub">26 יוני · Vihren Hut (2,400מ') · Okoto Lake · Ancient Pine</div>
+            </div>
+        </div>
+        <div class="chapter-body">
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🌲 העץ העתיק של בולגריה (Baikushev's Pine)</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>בדרך לבקתת ויהרן, עצרו לבקר באתר העץ העתיק של בולגריה – עץ אורן עתיק בן מאות שנים, אחד הסמלים הטבעיים של הרי פירין.</p>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Baikushev+pine+tree+Bansko+Bulgaria" target="_blank" class="map-btn btn-map">📍 העץ העתיק</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Baikushev+pine+Bansko+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Baikushev+pine+Bansko+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 הליכה</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>⛰️ בקתת ויהרן (Vihren Hut) – 2,400 מטר</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>נסיעה מהמלון בבנסקו – יוצאים שמאלה ומתקדמים לכיוון ההר. הכביש צר עם הרבה פיתולים – <strong>הדרך מדהימה ושווה את ההשקעה!</strong></p>
+                    <div class="info-box">ℹ️ בגובה 2,400מ' – כאן תנשמו אוויר פסגות! יש בית קפה נחמד וכל המטיילים מתכנסים כאן.</div>
+                    <div class="warning-box">⚠️ הכביש יכול להיות צר עם הרבה פיתולים – נסעו בזהירות ולאט!</div>
+                    <p>🌊 <strong>בדרך חזרה:</strong> מצד ימין יהיו מפלים ממש יפים – יש חניה בשוליים עם ספסל!</p>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Vihren+Hut+Bansko+Pirin+Bulgaria" target="_blank" class="map-btn btn-map">📍 בקתת ויהרן</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Vihren+Hut+Bansko+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט לבקתה</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>👁️ אגם אקוטו (Okoto Lake) – "עין השטן"</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>הליכה מבקתת ויהרן לאגם אקוטו (Okoto = עין בבולגרית). אחד מאגמי הקרחון הנפלאים של הרי פירין. לאחר מכן הליכה לאורך הנהר וחזרה לרכב.</p>
+                    <div class="hike-stats">
+                        <span class="difficulty medium">קושי: בינוני</span>
+                        <div class="stat-badge">📏 ~10 ק"מ (אופציה)</div>
+                        <div class="stat-badge">💎 אגם קרחוני</div>
+                    </div>
+                    <div class="tip-box">💡 <strong>אופציה נוספת:</strong> מסלול הליכה של כ-10 ק"מ מ-Plato Ski Lift. קיים ב-AllTrails וב-Komoot.</div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Okoto+Lake+Pirin+Bulgaria" target="_blank" class="map-btn btn-map">📍 אגם אקוטו</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Okoto+Lake+Pirin+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט הליכה</a>
+                        <a href="https://www.alltrails.com/explore?q=Okoto+Lake+Pirin+Bulgaria" target="_blank" class="map-btn btn-trail">🥾 AllTrails</a>
+                        <a href="https://www.komoot.com/explore/region/1074" target="_blank" class="map-btn btn-trail">🗺️ Komoot</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ חזרה לתוכן עניינים</a>
+        </div>
+    </div>
+
+    <!-- ===== CH 4: VIHREN PEAK / BANDERISHKI LAKES ===== -->
+    <div class="chapter" id="ch4">
+        <div class="chapter-header">
+            <span class="ch-icon">🏔️</span>
+            <div>
+                <h2>פרק 4: פסגת ויהרן ואגמי בנדרישקי</h2>
+                <div class="ch-sub">הרי פירין · Vihren Peak 2,914מ' · Banderishki Lakes</div>
+            </div>
+        </div>
+        <div class="chapter-body">
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🏔️ פסגת ויהרן (Vihren Peak) – 2,914 מטר</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>הפסגה הגבוהה של הרי פירין ושנייה בגובהה בכל בולגריה! ההליכה עוברת דרך אזור גולם קאזאן (Golem Kazan – "הקדרה הענקית") – צוק דולומיטים של 300 מטר עם פרחי אדלוויס ועזי בר חופשיים.</p>
+                    <div class="hike-stats">
+                        <span class="difficulty hard">קושי: קשה</span>
+                        <div class="stat-badge">📏 8.5 ק"מ</div>
+                        <div class="stat-badge">⬆️⬇️ 1,000 מ'</div>
+                        <div class="stat-badge">🏔️ 2,914 מ'</div>
+                        <div class="stat-badge">⏱️ ~5 שעות</div>
+                    </div>
+                    <p>מפסגת ההר ניתן לראות את <strong>הים</strong> ואת כל הרכס הנמוך יותר! נוף פנורמי עוצר נשימה.</p>
+                    <div class="warning-box">⚠️ <strong>למיטיבי לכת בלבד!</strong> מסלול קשה. ייתכן שלג עד יולי. הכינו ציוד הרים מתאים.</div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Vihren+Peak+Pirin+Bulgaria" target="_blank" class="map-btn btn-map">📍 פסגת ויהרן</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Vihren+Hut+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט לנקודת ההתחלה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Vihren+Peak+Pirin+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט הליכה</a>
+                        <a href="https://www.alltrails.com/explore?q=Vihren+Bulgaria" target="_blank" class="map-btn btn-trail">🥾 AllTrails</a>
+                        <a href="https://www.komoot.com/explore/region/1074" target="_blank" class="map-btn btn-trail">🗺️ Komoot</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🌊 אגמי בנדרישקי (Banderishki Lakes)</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>מסלול מרהיב מבקתת ויהרן אל הקרקס הקרחוני של אגמי בנדרישקי, ממשיכים לאגמי טודוריני אוצ'י (Todorini Ochi Lakes), ולתוך שמורת טבע יולן (Yulen Reserve) לאורך נהר דמוניצה (Demyanitsa River).</p>
+                    <div class="hike-stats">
+                        <span class="difficulty hard">קושי: קשה</span>
+                        <div class="stat-badge">📏 16.5 ק"מ</div>
+                        <div class="stat-badge">⬆️ 615 מ'</div>
+                        <div class="stat-badge">⬇️ 1,215 מ'</div>
+                    </div>
+                    <div class="tip-box">💡 <strong>גרסה קצרה (מומלצת לנוחים):</strong> מסלול מעגלי סביב 5 האגמים בקרקס – 7.5 ק"מ, 450 מ' גובה. יפה לא פחות!</div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Banderishki+Lakes+Pirin+Bulgaria" target="_blank" class="map-btn btn-map">📍 אגמי בנדרישקי</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Vihren+Hut+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט לנקודת ההתחלה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Banderishki+lakes+Pirin+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט הליכה</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ חזרה לתוכן עניינים</a>
+        </div>
+    </div>
+
+    <!-- ===== CH 5: RILA MONASTERY ===== -->
+    <div class="chapter" id="ch5">
+        <div class="chapter-header">
+            <span class="ch-icon">⛪</span>
+            <div>
+                <h2>פרק 5: מנזר רילה ומפלי סקאקוויצה</h2>
+                <div class="ch-sub">27 יוני · Rila Monastery UNESCO · Skakavitsa Waterfalls</div>
+            </div>
+        </div>
+        <div class="chapter-body">
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>⛪ מנזר רילה (Rila Monastery) – אונסק"ו</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>מנזר רילה הוא <strong>המנזר הגדול והמפורסם ביותר בבולגריה</strong>, מוכרז כאתר מורשת עולמית של אונסק"ו. נסיעה מבנסקו.</p>
+                    <ul>
+                        <li>🎨 ציורי רנסנס מרהיבים בכנסייה – ברמת הקפלה הסיסטינית</li>
+                        <li>🏛️ אדריכלות ייחודית ומרשימה</li>
+                        <li>🌲 ממוקם בלב יערות ההרים הירוקים</li>
+                        <li>📸 אתר צילום מרהיב</li>
+                    </ul>
+                    <div class="tip-box">💡 יום רגוע – בלו שעה-שעתיים באתר לפני המשך לסקאקוויצה.</div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Rila+Monastery+Bulgaria" target="_blank" class="map-btn btn-map">📍 מנזר רילה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Rila+Monastery+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Rila+Monastery+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 הליכה מהחניה</a>
+                        <a href="https://rilamonastery.pmscms.com/" target="_blank" class="map-btn btn-web">🌐 אתר רשמי</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>💦 מפלי סקאקוויצה (Skakavitsa Waterfalls)</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>לאחר ביקור במנזר, המשיכו למפלי סקאקוויצה – הליכה קלה ויפה לאתר מפלים מרהיב.</p>
+                    <div class="hike-stats">
+                        <span class="difficulty easy">קושי: קל</span>
+                        <div class="stat-badge">💦 מפלים</div>
+                        <div class="stat-badge">🌲 יער</div>
+                    </div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Skakavitsa+Waterfalls+Rila+Bulgaria" target="_blank" class="map-btn btn-map">📍 מפלי סקאקוויצה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Skakavitsa+Waterfall+Rila+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Skakavitsa+Waterfall+Rila+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 הליכה למפלים</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ חזרה לתוכן עניינים</a>
+        </div>
+    </div>
+
+    <!-- ===== CH 6: ECO TRAIL ===== -->
+    <div class="chapter" id="ch6">
+        <div class="chapter-header">
+            <span class="ch-icon">🌉</span>
+            <div>
+                <h2>פרק 6: אקו-טריל הגשרים</h2>
+                <div class="ch-sub">28 יוני · Echo Trail White River · Bridges</div>
+            </div>
+        </div>
+        <div class="chapter-body">
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🌉 מסלול האקו-טריל עם הגשרים</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>מסלול אקו-טריל מרהיב עם גשרים ייחודיים לאורך הנהר הלבן (White River) – נוף עוצר נשימה!</p>
+                    <div class="hike-stats">
+                        <span class="difficulty easy">קושי: קל</span>
+                        <div class="stat-badge">🌊 הנהר הלבן</div>
+                        <div class="stat-badge">🌉 גשרים ייחודיים</div>
+                    </div>
+                    <div class="warning-box">⚠️ <strong>שימו לב חשוב!</strong> המקום עלול להיות סגור – בביקורים קודמים הגשרים והסולמות היו רעועים עקב גשמים כבדים. בדקו מראש לפני ההגעה!</div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Echo+Trail+White+River+Bulgaria+bridges" target="_blank" class="map-btn btn-map">📍 מפה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Echo+Trail+Rhodopes+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Echo+Trail+White+River+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט הליכה</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ חזרה לתוכן עניינים</a>
+        </div>
+    </div>
+
+    <!-- ===== CH 7: SPA ===== -->
+    <div class="chapter" id="ch7">
+        <div class="chapter-header">
+            <span class="ch-icon">♨️</span>
+            <div>
+                <h2>פרק 7: ספא ומעיינות חמים</h2>
+                <div class="ch-sub">28 יוני · Hot Springs & Mineral Pools · ליד בנסקו</div>
+            </div>
+        </div>
+        <div class="chapter-body">
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>♨️ מרחצאות איזגרווה – 1.5 ק"מ מבנסקו</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>מתחם בריכות חיצוני עם מים מינרליים חמים, הכי קרוב לבנסקו! קילומטר וחצי בלבד.</p>
+                    <ul>
+                        <li>🌡️ 3 בריכות: 37°C, 39°C ו-41°C</li>
+                        <li>👶 בריכת ילדים נפרדת</li>
+                        <li>🚲 מרחק אופניים מהעיר!</li>
+                    </ul>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Banya+hot+springs+Bansko+Bulgaria" target="_blank" class="map-btn btn-map">📍 מפה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Banya+mineral+springs+Bansko+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Banya+mineral+springs+Bansko+Bulgaria&travelmode=bicycling" target="_blank" class="map-btn btn-bike">🚲 ניווט אופניים</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Banya+mineral+springs+Bansko+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 הליכה</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>♨️ מרחצאות באניה – 5 ק"מ מבנסקו</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>אתר נופש ספא עם מגוון רחב של מתקנים:</p>
+                    <ul>
+                        <li>🏊 בריכות פנימיות וחיצוניות</li>
+                        <li>🧖 סאונה</li>
+                        <li>🛁 ג'קוזי</li>
+                        <li>🌊 חמאם</li>
+                    </ul>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Banya+spa+Bansko+Bulgaria" target="_blank" class="map-btn btn-map">📍 מפה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Banya+spa+Bansko+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>♨️ דוברינישטה – 15 ק"מ מבנסקו</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>עיירה קטנה עם מעיינות חמים טבעיים ובריכות ציבוריות עם מים מינרליים. גם נקודת ההתחלה של הרכבל לבזבוג!</p>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Dobrinishte+hot+springs+Bulgaria" target="_blank" class="map-btn btn-map">📍 מפה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Dobrinishte+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>✨ ספא ספארבה (Sparel Spa) – 20 ק"מ מבנסקו</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>אתר נופש ספא יוקרתי עם המגוון המלא:</p>
+                    <ul>
+                        <li>🏊 בריכות פנימיות וחיצוניות</li>
+                        <li>🧖 טיפולי ספא</li>
+                        <li>🌊 חמאם, ג'קוזי, סאונה</li>
+                    </ul>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Sparel+Spa+Bulgaria" target="_blank" class="map-btn btn-map">📍 מפה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Sparel+Spa+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>♨️ אוגניאנובו (Ognyanovo) – 40 ק"מ מבנסקו</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>עיירה עם מעיינות חמים טבעיים ובריכות ציבוריות.</p>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Ognyanovo+hot+springs+Bulgaria" target="_blank" class="map-btn btn-map">📍 מפה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Ognyanovo+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">💡 <strong>טיפים לבחירת מעיין חם:</strong> חשבו מה אתם מחפשים (טבע? מתקנים?), קחו בחשבון תקציב, ובדקו שעות פתיחה מראש.</div>
+
+            <a href="#top" class="back-to-top">↑ חזרה לתוכן עניינים</a>
+        </div>
+    </div>
+
+    <!-- ===== CH 8: MUSALA ===== -->
+    <div class="chapter" id="ch8">
+        <div class="chapter-header">
+            <span class="ch-icon">🏔️</span>
+            <div>
+                <h2>פרק 8: הר מוסלה</h2>
+                <div class="ch-sub">29 יוני · Musala 2,925מ' · הפסגה הגבוהה בבולגריה!</div>
+            </div>
+        </div>
+        <div class="chapter-body">
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🚡 רכבל לבוקמדז'יקה ופסגת מוסלה</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>עלייה ברכבל מבורובץ (Borovets) לגובה 2,400 מטר, ומשם הליכה לפסגת מוסלה – <strong>הפסגה הגבוהה ביותר בבולגריה ובכל חצי האי הבלקני (2,925 מטר)!</strong></p>
+                    <div class="hike-stats">
+                        <span class="difficulty medium">קושי: בינוני</span>
+                        <div class="stat-badge">📏 ~10 ק"מ</div>
+                        <div class="stat-badge">🏔️ 2,925 מ'</div>
+                        <div class="stat-badge">🚡 רכבל עד 2,400מ'</div>
+                    </div>
+                    <p>המסלול כולל הליכה לאגמים קרחוניים ולבקתה – נוף פנורמי מרהיב!</p>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Musala+Peak+Rila+Bulgaria" target="_blank" class="map-btn btn-map">📍 פסגת מוסלה</a>
+                        <a href="https://maps.google.com/?q=Borovets+ski+gondola+Bulgaria" target="_blank" class="map-btn btn-map">📍 רכבל בורובץ</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Borovets+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט לרכבל</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Musala+Peak+Rila+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט הליכה לפסגה</a>
+                        <a href="https://www.alltrails.com/explore?q=Musala+Bulgaria" target="_blank" class="map-btn btn-trail">🥾 AllTrails</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ חזרה לתוכן עניינים</a>
+        </div>
+    </div>
+
+    <!-- ===== CH 9: SEVEN RILA LAKES ===== -->
+    <div class="chapter" id="ch9">
+        <div class="chapter-header">
+            <span class="ch-icon">🏞️</span>
+            <div>
+                <h2>פרק 9: שבעת אגמי רילה</h2>
+                <div class="ch-sub">30 יוני · Seven Rila Lakes · Panichishte Chairlift</div>
+            </div>
+        </div>
+        <div class="chapter-body">
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🚡 רכבל מפאניצ'ישטה (Rila Lakes Chairlift)</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>נסיעה לפאניצ'ישטה (Panichishte) ועלייה ברכבל-כסאות לאזור שבעת האגמים.</p>
+                    <div class="warning-box">⚠️ <strong>שעות הרכבל: 9:00–16:30</strong>. הרכבל האחרון חזרה בשעה 16:30 – אל תפספסו, אחרת יש הליכה ארוכה מאוד חזרה!</div>
+                    <div class="info-box">💰 יש לרכוש כרטיסים עצמאית במקום. עלות לכיוון אחד.</div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Panichishte+chairlift+Seven+Rila+Lakes+Bulgaria" target="_blank" class="map-btn btn-map">📍 פאניצ'ישטה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Panichishte+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט לפאניצ'ישטה</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>💎 שבעת האגמים – מסלול הליכה</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>שבעת אגמי רילה הם אגמי קרחון ממוקמים בגובה 2,100–2,500 מטר בהרי רילה הצפון-מערביים. מסלול מעגלי ~10 ק"מ.</p>
+                    <div class="hike-stats">
+                        <span class="difficulty medium">קושי: בינוני</span>
+                        <div class="stat-badge">📏 ~10 ק"מ</div>
+                        <div class="stat-badge">🏔️ 2,100–2,500 מ'</div>
+                        <div class="stat-badge">💎 7 אגמים</div>
+                        <div class="stat-badge">⏱️ 4–5 שעות</div>
+                    </div>
+                    <ul>
+                        <li>💧 הדמעה (Salzata), העין (Okoto), הכליה (Babrekut)</li>
+                        <li>💧 התאום (Bliznaka), השרשרת (Halkata), המשולש (Trilistnika), הפיש (Ribata)</li>
+                        <li>👁️ המראה המרשים ביותר הוא מהחלק הגבוה של המסלול</li>
+                    </ul>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Seven+Rila+Lakes+Bulgaria" target="_blank" class="map-btn btn-map">📍 שבעת האגמים</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Seven+Rila+Lakes+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט הליכה</a>
+                        <a href="https://www.alltrails.com/trail/bulgaria/kyustendil/seven-rila-lakes-loop" target="_blank" class="map-btn btn-trail">🥾 AllTrails – 7 אגמים</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ חזרה לתוכן עניינים</a>
+        </div>
+    </div>
+
+    <!-- ===== CH 10: VITOSHA ===== -->
+    <div class="chapter" id="ch10">
+        <div class="chapter-header">
+            <span class="ch-icon">🌿</span>
+            <div>
+                <h2>פרק 10: הר ויטושה וגשרי הזהב</h2>
+                <div class="ch-sub">1 יולי · Mount Vitosha · Golden Bridges (Zlatni Mostove)</div>
+            </div>
+        </div>
+        <div class="chapter-body">
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🌉 גשרי הזהב (Zlatni Mostove / Golden Bridges)</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>תופעת טבע ייחודית – "נהרות אבן" ענקיים (שדות אבן גדולים) בשמורת הטבע של הר ויטושה. נוף מרהיב ומיוחד!</p>
+                    <ul>
+                        <li>🪨 שדות אבן טבעיים ענקיים שנוצרו בתהליך גאולוגי</li>
+                        <li>🌲 יערות אשוח עתיקים</li>
+                        <li>🌿 שמורת טבע טורפנו בראנישטה (Torfeno Branishte)</li>
+                        <li>🚌 אוטובוס 66 מסופיה</li>
+                    </ul>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Zlatni+Mostove+Vitosha+Sofia+Bulgaria" target="_blank" class="map-btn btn-map">📍 גשרי הזהב</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Zlatni+Mostove+Vitosha+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Zlatni+Mostove+Vitosha+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט הליכה</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🌿 מסלול הליכה ~10 ק"מ בהר ויטושה</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>מסלול ~10 ק"מ בהר ויטושה – הפארק הלאומי של סופיה. מתחיל בקרחת יער אלקו (Aleko).</p>
+                    <div class="hike-stats">
+                        <span class="difficulty medium">קושי: בינוני</span>
+                        <div class="stat-badge">📏 ~10 ק"מ</div>
+                        <div class="stat-badge">🏔️ עד 2,290מ'</div>
+                        <div class="stat-badge">⏱️ 4–5 שעות</div>
+                    </div>
+                    <div class="info-box">🚌 <strong>הגעה בתחבורה ציבורית:</strong> אוטובוס מספר 66 מסופיה עד קרחת יער אלקו. יש גם חניון בתשלום.</div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Aleko+mountain+lodge+Vitosha+Bulgaria" target="_blank" class="map-btn btn-map">📍 נקודת ההתחלה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Aleko+mountain+lodge+Vitosha+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Aleko+Vitosha+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט הליכה</a>
+                        <a href="https://www.alltrails.com/explore?q=Vitosha+Sofia+Bulgaria" target="_blank" class="map-btn btn-trail">🥾 AllTrails</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🏔️ פסגת צ'רני וורה (Cherni Vrah) – 2,290 מ' (אופציה)</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>הפסגה הגבוהה של הר ויטושה, 2,290 מטר. טיפוס עם נוף פנורמי על סופיה!</p>
+                    <div class="hike-stats">
+                        <div class="stat-badge">🏔️ 2,290 מ'</div>
+                        <div class="stat-badge">⬆️ 690 מ'</div>
+                        <div class="stat-badge">📏 16.5 ק"מ (כולל גשרי הזהב)</div>
+                    </div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Cherni+Vrah+peak+Vitosha+Bulgaria" target="_blank" class="map-btn btn-map">📍 פסגת צ'רני וורה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Cherni+Vrah+Vitosha+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט הליכה</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ חזרה לתוכן עניינים</a>
+        </div>
+    </div>
+
+    <!-- ===== CH 11: SOFIA ===== -->
+    <div class="chapter" id="ch11">
+        <div class="chapter-header">
+            <span class="ch-icon">🏛️</span>
+            <div>
+                <h2>פרק 11: סופיה</h2>
+                <div class="ch-sub">2–3 יולי · Sofia · עיר הבירה</div>
+            </div>
+        </div>
+        <div class="chapter-body">
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🚶 טיול בסופיה</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>סופיה מציעה מדרחוב עשיר ואטרקציות רבות. מהמלון נוח מאוד להגיע למדרחוב.</p>
+                    <ul>
+                        <li>🚶 ויטושה בולבר – המדרחוב הראשי</li>
+                        <li>🏛️ כנסיית אלכסנדר נבסקי – קתדרלה מרהיבה</li>
+                        <li>🏛️ המוזיאון הארכאולוגי</li>
+                        <li>🌿 גן בוריסובה גרדינה (Borisova Gradina)</li>
+                        <li>🛒 שוק הגנבים (Ladies Market)</li>
+                    </ul>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Sofia+city+center+Bulgaria" target="_blank" class="map-btn btn-map">📍 מרכז סופיה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Vitosha+Boulevard+Sofia+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט למדרחוב</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Vitosha+Boulevard+Sofia+Bulgaria&travelmode=bicycling" target="_blank" class="map-btn btn-bike">🚲 אופניים</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🍽️ Happy Bar – מסעדה מומלצת בסופיה</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>מסעדה מומלצת. מהמלון: פונים ימינה, הולכים עד הרמזור ושם פונים שמאלה.</p>
+                    <div class="warning-box">⚠️ <strong>חשוב:</strong> צריך להזמין מקום מראש או להמתין!</div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Happy+Bar+Grill+Sofia+Bulgaria" target="_blank" class="map-btn btn-map">📍 Happy Bar</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Happy+Bar+Grill+Sofia+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט הליכה</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>✈️ שדה התעופה של סופיה</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>3.7 – בוקר בסופיה, אחר הצהריים נסיעה לשדה התעופה.</p>
+                    <div class="tip-box">💡 זמן נסיעה מסופיה לשדה התעופה: כ-20–30 דקות.</div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Sofia+Airport+Bulgaria" target="_blank" class="map-btn btn-map">📍 שדה התעופה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Sofia+Airport+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ חזרה לתוכן עניינים</a>
+        </div>
+    </div>
+
+    <!-- ===== CH 12: PLOVDIV ===== -->
+    <div class="chapter" id="ch12">
+        <div class="chapter-header">
+            <span class="ch-icon">🎨</span>
+            <div>
+                <h2>פרק 12: פלובדיב וסביבה</h2>
+                <div class="ch-sub">Plovdiv · סכר קריצ'ים · מפלי מלקיה יאבור · הישריה</div>
+            </div>
+        </div>
+        <div class="chapter-body">
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>💧 סכר קריצ'ים (Krichim Dam)</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>מאגר מרשים בין ההרים בדרך מסופיה לפלובדיב. מקום לעצור ולהתפעל מהנוף.</p>
+                    <div class="tip-box">💡 אין מסלול הליכה מסומן – רק לראות ולנסוע קרוב לאגם.</div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Krichim+Dam+Bulgaria" target="_blank" class="map-btn btn-map">📍 סכר קריצ'ים</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Krichim+Dam+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>💦 מלקיה יאבור – נהר ומפלים</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>הגעה לחניה של המסעדה "Malkia Yavor" – חפש בגוגל מאפ. חוצים את הנהר על הגשר ופונים שמאלה – הליכה קלה יחסית ומאוד יפה עד למפלים!</p>
+                    <div class="hike-stats">
+                        <span class="difficulty easy">קושי: קל</span>
+                        <div class="stat-badge">💦 מפלים</div>
+                        <div class="stat-badge">🌊 לאורך הנהר</div>
+                    </div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Malkia+Yavor+restaurant+Bulgaria" target="_blank" class="map-btn btn-map">📍 מלקיה יאבור</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Malkia+Yavor+waterfall+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט הליכה למפלים</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>💦 מפלי סיטובו (Sitovo Waterfall)</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>מפל יפה באזור פלובדיב.</p>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Sitovo+Waterfall+Bulgaria" target="_blank" class="map-btn btn-map">📍 מפלי סיטובו</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Sitovo+Waterfall+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Sitovo+Waterfall+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 הליכה</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🏛️ העיר העתיקה של פלובדיב</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>פלובדיב – אחת מהערים הישנות ביותר באירופה (3,000+ שנה)! כדאי:</p>
+                    <ul>
+                        <li>🚶 לטייל באזור העיר העתיקה</li>
+                        <li>👁️ לעלות לתצפית</li>
+                        <li>🛣️ לעשות את המדרחוב</li>
+                        <li>🌊 ללכת לנהר – ממש יפה שם!</li>
+                    </ul>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Plovdiv+Old+Town+Bulgaria" target="_blank" class="map-btn btn-map">📍 העיר העתיקה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Plovdiv+Old+Town+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט הליכה</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Plovdiv+Old+Town+Bulgaria&travelmode=bicycling" target="_blank" class="map-btn btn-bike">🚲 אופניים</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🏨 מלון ומסעדה בפלובדיב</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <div class="place-card">
+                        <h4>🏨 מלון הילטון פלובדיב</h4>
+                        <div class="map-buttons">
+                            <a href="https://maps.google.com/?q=Hilton+Plovdiv+Bulgaria" target="_blank" class="map-btn btn-map">📍 מפה</a>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=Hilton+Plovdiv+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                        </div>
+                    </div>
+                    <div class="place-card">
+                        <h4>🍽️ Happy Bar – פלובדיב</h4>
+                        <p>ממש בתחילת המדרחוב כשבאים מהמלון.</p>
+                        <div class="map-buttons">
+                            <a href="https://maps.google.com/?q=Happy+Bar+Grill+Plovdiv+Bulgaria" target="_blank" class="map-btn btn-map">📍 מפה</a>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=Happy+Bar+Plovdiv+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 הליכה</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ חזרה לתוכן עניינים</a>
+        </div>
+    </div>
+
+    <!-- ===== CH 13: SAMOKOV & BATAK ===== -->
+    <div class="chapter" id="ch13">
+        <div class="chapter-header">
+            <span class="ch-icon">🏙️</span>
+            <div>
+                <h2>פרק 13: סמוקוב ואגם בטאק</h2>
+                <div class="ch-sub">Samokov · Batak Dam Reservoir · Echo Trail Beli Iskar</div>
+            </div>
+        </div>
+        <div class="chapter-body">
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>💧 אגם בטאק (Batak Dam Reservoir)</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>בדרך מבנסקו לסמוקוב עוצרים באגם בטאק – נוצר בעקבות הסכר, נוף יפה מאוד. כדאי להתקרב עם האוטו לאגם – הבולגרים מתמקמים לאורכו. יש גם בתי מלון.</p>
+                    <div class="tip-box">💡 חיפוש בגוגל מאפ: <strong>"Batak Dam Reservoir"</strong></div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Batak+Dam+Reservoir+Bulgaria" target="_blank" class="map-btn btn-map">📍 אגם בטאק</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Batak+Dam+Reservoir+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🌊 אקו-טריל בלי איסקר – 8 גשרים</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <p>מסלול הליכה לאורך הנהר בלי-איסקר (Beli Iskar) כולל <strong>8 גשרים</strong>! שמורת טבע ממוקמת ליד סמוקוב.</p>
+                    <div class="hike-stats">
+                        <span class="difficulty easy">קושי: קל</span>
+                        <div class="stat-badge">🌉 8 גשרים</div>
+                        <div class="stat-badge">🌊 לאורך הנהר</div>
+                    </div>
+                    <div class="map-buttons">
+                        <a href="https://maps.google.com/?q=Beli+Iskar+Echo+Trail+Samokov+Bulgaria" target="_blank" class="map-btn btn-map">📍 אקו-טריל</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Beli+Iskar+trail+Samokov+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Beli+Iskar+trail+Samokov+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 ניווט הליכה</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🏨 מלון ומסעדה בסמוקוב</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <div class="place-card">
+                        <h4>🏨 Hotel Cota 1110</h4>
+                        <p>מעט מרוחק, קרוב להליכה על הנהר.</p>
+                        <div class="map-buttons">
+                            <a href="https://maps.google.com/?q=Hotel+Cota+1110+Samokov+Bulgaria" target="_blank" class="map-btn btn-map">📍 מפה</a>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=Hotel+Cota+1110+Samokov+Bulgaria&travelmode=driving" target="_blank" class="map-btn btn-drive">🚗 ניווט</a>
+                        </div>
+                    </div>
+                    <div class="place-card">
+                        <h4>🍽️ Delight Bar</h4>
+                        <p>מסעדה אותנטית במחירים מצחיקים!</p>
+                        <div class="map-buttons">
+                            <a href="https://maps.google.com/?q=Delight+bar+Samokov+Bulgaria" target="_blank" class="map-btn btn-map">📍 מפה</a>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=Delight+bar+Samokov+Bulgaria&travelmode=walking" target="_blank" class="map-btn btn-walk">🚶 הליכה</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ חזרה לתוכן עניינים</a>
+        </div>
+    </div>
+
+    <!-- ===== CH 14: TIPS ===== -->
+    <div class="chapter" id="ch14">
+        <div class="chapter-header warn-header">
+            <span class="ch-icon">🚗</span>
+            <div>
+                <h2>פרק 14: טיפים חשובים – רכב ונסיעה</h2>
+                <div class="ch-sub">חשוב לדעת לפני הנסיעה לבולגריה!</div>
+            </div>
+        </div>
+        <div class="chapter-body">
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>📋 רישיון נהיגה בינלאומי</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <div class="warning-box">⚠️ <strong>חובה!</strong> כל חברות ההשכרה בבולגריה מחייבות <strong>רישיון נהיגה בינלאומי</strong>. הכינו אותו מראש!</div>
+                    <p>ניתן להוציא רישיון נהיגה בינלאומי במשרד הרישוי לפני הנסיעה.</p>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🚦 מגבלות מהירות</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <ul>
+                        <li>🛣️ <strong>אוטוסטרדה:</strong> מהירות רגילה (130 קמ"ש)</li>
+                        <li>🏞️ <strong>מחוץ לאוטוסטרדה:</strong> 60 קמ"ש</li>
+                        <li>🏘️ <strong>בתוך ערים וכפרים:</strong> 30–40 קמ"ש</li>
+                    </ul>
+                    <div class="warning-box">⚠️ <strong>מצלמות מהירות!</strong> הרבה מאוד מצלמות מאוישות עם שוטרים. נסעו לפי המגבלות!</div>
+                    <div class="info-box">ℹ️ זמני ההגעה לא תמיד חופפים לתכנון בגלל מגבלות המהירות הנמוכות.</div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>🗺️ ניווט ומציאת מקומות</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <div class="tip-box">💡 <strong>טיפ מוכח:</strong> רשמו את שמות המקומות בגוגל מאפ ותמצאו את כל המידע! עובד מצוין בבולגריה.</div>
+                    <p>מפה מלאה עם כל אתרי הטיול:</p>
+                    <div class="map-buttons">
+                        <a href="https://maps.app.goo.gl/7CJu9mBBom4eZXJk9?g_st=ac" target="_blank" class="map-btn btn-map">🗺️ מפה מלאה של הטיול</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic">
+                <div class="topic-header" onclick="toggleTopic(this)">
+                    <h3>⛰️ ציוד להליכה בהרים</h3>
+                    <span class="topic-arrow">▼</span>
+                </div>
+                <div class="topic-content">
+                    <ul>
+                        <li>👟 נעלי הליכה (לא ספורט רגיל)</li>
+                        <li>💧 הרבה מים</li>
+                        <li>🧆 חטיפים</li>
+                        <li>🧥 שכבות לקור – גם בקיץ בפסגות קר מאוד</li>
+                        <li>☔ מעיל גשם – גשם לא צפוי בהרים</li>
+                        <li>☀️ קרם הגנה וכובע</li>
+                        <li>📱 AllTrails / Komoot – מומלץ להוריד מסלולים</li>
+                    </ul>
+                    <div class="warning-box">⚠️ ייתכן שלג על חלק מהשבילים גם עד סוף יולי! היו מוכנים.</div>
+                    <div class="map-buttons">
+                        <a href="https://www.alltrails.com/explore?q=Bulgaria" target="_blank" class="map-btn btn-trail">🥾 AllTrails – בולגריה</a>
+                        <a href="https://www.komoot.com/explore/region/1074" target="_blank" class="map-btn btn-trail">🗺️ Komoot – פירין</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ חזרה לתוכן עניינים</a>
+        </div>
+    </div>
+
+</div><!-- /chapters-container -->
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+    <p style="font-size:1.2rem; margin-bottom:6px;">🏔️ טיול בולגריה 2024</p>
+    <p style="opacity:0.8; font-size:0.9rem;">הרי פירין ורילה · 24 יוני – 3 יולי 2024</p>
+    <p style="margin-top:12px; font-size:0.82rem; opacity:0.65;">
+        <a href="https://maps.app.goo.gl/7CJu9mBBom4eZXJk9?g_st=ac" target="_blank">🗺️ מפה מלאה</a> &nbsp;|&nbsp;
+        <a href="https://www.alltrails.com/explore?q=Bulgaria" target="_blank">🥾 AllTrails</a> &nbsp;|&nbsp;
+        <a href="https://www.komoot.com/explore/region/1074" target="_blank">🗺️ Komoot</a>
+    </p>
+</footer>
+
+<!-- ===================== JAVASCRIPT ===================== -->
+<script>
+    function toggleTopic(header) {
+        header.classList.toggle('active');
+        const content = header.nextElementSibling;
+        content.classList.toggle('open');
+    }
+
+    // Smooth scroll for TOC anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                const offset = 16;
+                const top = target.getBoundingClientRect().top + window.scrollY - offset;
+                window.scrollTo({ top, behavior: 'smooth' });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
