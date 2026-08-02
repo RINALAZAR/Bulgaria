@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>איטלקית אינטראקטיבית — לומדים פעלים</title>
+<style>
+  :root{
+    --green:#009246; --white:#ffffff; --red:#CE2B37;
+    --dark:#1a1a2e; --ink:#2c2c3a;
+    --present:#1565C0; --past:#E65100; --future:#2E7D32;
+    --bg:#f3f5f8; --card:#ffffff; --muted:#6b7280;
+    --ok:#2E7D32; --bad:#C62828;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Segoe UI', Tahoma, Arial, sans-serif;
+    background:var(--bg); color:var(--ink); direction:rtl; min-height:100vh;
+  }
+  header{
+    background:linear-gradient(135deg,var(--green),var(--red));
+    color:#fff; padding:26px 18px; text-align:center;
+    box-shadow:0 3px 14px rgba(0,0,0,.2);
+  }
+  header h1{font-size:1.9em; margin-bottom:4px;}
+  header p{opacity:.9; font-size:1em;}
+  nav{
+    background:#fff; display:flex; justify-content:center; gap:8px;
+    padding:10px; flex-wrap:wrap; position:sticky; top:0; z-index:50;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+  }
+  nav button{
+    padding:10px 20px; border:none; background:var(--bg); border-radius:24px;
+    cursor:pointer; font-size:.95em; font-family:inherit; font-weight:600;
+    transition:all .25s; color:var(--ink);
+  }
+  nav button.active{background:var(--green); color:#fff;}
+  nav button:hover:not(.active){background:#e2e6ee;}
+  main{max-width:980px; margin:0 auto; padding:20px 14px 60px;}
+  section{display:none; animation:fade .3s ease;}
+  section.active{display:block;}
+  @keyframes fade{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+  .section-title{font-size:1.5em; margin-bottom:4px; color:var(--dark);}
+  .section-sub{color:var(--muted); margin-bottom:16px; font-size:.92em;}
+
+  /* Browse */
+  .search-box{
+    width:100%; padding:12px 18px; border:2px solid #dde1e8; border-radius:24px;
+    font-size:1em; outline:none; margin-bottom:16px; direction:rtl; font-family:inherit;
+  }
+  .search-box:focus{border-color:var(--green);}
+  .verb-card{
+    background:var(--card); border-radius:14px; margin-bottom:12px; overflow:hidden;
+    box-shadow:0 2px 10px rgba(0,0,0,.07); border-right:5px solid var(--green);
+  }
+  .verb-head{
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    padding:14px 18px; cursor:pointer; user-select:none;
+  }
+  .verb-head:hover{background:#f8faf9;}
+  .verb-head .heb{font-weight:700; font-size:1.15em;}
+  .verb-head .ita{color:var(--green); font-weight:600;}
+  .verb-head .phon{color:var(--muted); font-size:.85em;}
+  .verb-head .arrow{transition:transform .25s; color:var(--muted);}
+  .verb-card.open .arrow{transform:rotate(180deg);}
+  .conj-wrap{display:none; padding:0 14px 16px;}
+  .verb-card.open .conj-wrap{display:block;}
+  table.conj{width:100%; border-collapse:collapse; font-size:.86em;}
+  table.conj th, table.conj td{padding:8px 6px; text-align:center; border-bottom:1px solid #eef0f4;}
+  table.conj th{background:#f5f6fa; font-weight:700;}
+  table.conj td small{display:block; color:var(--muted); font-size:.82em; margin-top:2px;}
+  tr.tense-present td:first-child{color:var(--present); font-weight:700;}
+  tr.tense-past td:first-child{color:var(--past); font-weight:700;}
+  tr.tense-future td:first-child{color:var(--future); font-weight:700;}
+  .legend{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:16px; font-size:.85em;}
+  .legend span{display:flex; align-items:center; gap:6px;}
+  .dot{width:10px; height:10px; border-radius:50%; display:inline-block;}
+
+  /* Flashcards */
+  .fc-controls{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px; align-items:center;}
+  select{padding:9px 14px; border-radius:20px; border:2px solid #dde1e8; font-family:inherit; font-size:.9em; background:#fff;}
+  .flashcard-wrap{display:flex; flex-direction:column; align-items:center; gap:16px;}
+  .flashcard{width:100%; max-width:460px; height:220px; perspective:1200px; cursor:pointer;}
+  .flashcard-inner{position:relative; width:100%; height:100%; transition:transform .6s; transform-style:preserve-3d;}
+  .flashcard.flipped .flashcard-inner{transform:rotateY(180deg);}
+  .fc-front, .fc-back{
+    position:absolute; inset:0; backface-visibility:hidden; border-radius:18px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:20px; text-align:center; box-shadow:0 10px 26px rgba(0,0,0,.16);
+  }
+  .fc-front{background:linear-gradient(135deg,var(--present),#1e88e5); color:#fff;}
+  .fc-back{background:linear-gradient(135deg,var(--red),#c0392b); color:#fff; transform:rotateY(180deg);}
+  .fc-label{font-size:.8em; opacity:.85; margin-bottom:8px;}
+  .fc-word{font-size:1.7em; font-weight:800;}
+  .fc-pron{font-size:1em; margin-top:8px; opacity:.9;}
+  .fc-hint{font-size:.78em; opacity:.7; margin-top:14px;}
+  .btns{display:flex; gap:10px; flex-wrap:wrap; justify-content:center;}
+  .btn{padding:10px 22px; border:none; border-radius:22px; cursor:pointer; font-size:.92em; font-family:inherit; font-weight:600; transition:.2s;}
+  .btn-green{background:var(--green); color:#fff;}
+  .btn-red{background:var(--red); color:#fff;}
+  .btn-gray{background:#6c757d; color:#fff;}
+  .btn:hover{opacity:.87; transform:translateY(-1px);}
+  .fc-counter{color:var(--muted); font-size:.88em;}
+
+  /* Cloze */
+  .score-bar{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;}
+  .score-pill{background:#fff; padding:8px 16px; border-radius:20px; box-shadow:0 2px 8px rgba(0,0,0,.08); font-size:.88em; font-weight:600;}
+  .cloze-card{background:#fff; border-radius:16px; padding:24px; box-shadow:0 3px 16px rgba(0,0,0,.08);}
+  .cloze-meta{font-size:.82em; color:var(--muted); margin-bottom:10px;}
+  .cloze-he{font-size:1.05em; margin-bottom:14px; line-height:1.6;}
+  .cloze-it{font-size:1.25em; font-weight:600; direction:ltr; text-align:center; color:var(--dark); margin-bottom:18px; line-height:1.6;}
+  .cloze-it .blank{display:inline-block; min-width:90px; border-bottom:2px solid var(--green);}
+  .answer-row{display:flex; gap:10px; margin-bottom:10px;}
+  .answer-row input{
+    flex:1; padding:12px 14px; border-radius:10px; border:2px solid #dde1e8;
+    font-size:1.05em; direction:ltr; font-family:inherit;
+  }
+  .answer-row input:focus{outline:none; border-color:var(--green);}
+  .feedback{padding:10px 14px; border-radius:10px; margin-bottom:10px; font-weight:600; display:none;}
+  .feedback.ok{display:block; background:#e8f5e9; color:var(--ok);}
+  .feedback.bad{display:block; background:#fdecea; color:var(--bad);}
+  .feedback .correct-ans{direction:ltr; display:inline-block;}
+
+  footer{text-align:center; padding:20px; color:var(--muted); font-size:.82em;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🇮🇹 איטלקית אינטראקטיבית — לומדים פעלים 🇮🇹</h1>
+  <p>17 פעלים · הווה, עבר ועתיד · לכל גוף · עם הגייה פונטית בעברית</p>
+</header>
+
+<nav>
+  <button class="active" data-sec="browse">📖 עיון בפעלים</button>
+  <button data-sec="flash">🃏 כרטיסיות</button>
+  <button data-sec="cloze">✍️ השלמת משפטים</button>
+</nav>
+
+<main>
+
+  <!-- ================= BROWSE ================= -->
+  <section id="browse" class="active">
+    <div class="section-title">עיון בכל הפעלים</div>
+    <div class="section-sub">לחצו על פועל כדי לראות את הטיותיו המלאות בכל הגופים והזמנים.</div>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--present)"></span> הווה (Presente)</span>
+      <span><span class="dot" style="background:var(--past)"></span> עבר (Passato Prossimo)</span>
+      <span><span class="dot" style="background:var(--future)"></span> עתיד (Futuro Semplice)</span>
+    </div>
+    <input class="search-box" id="searchBox" placeholder="חיפוש פועל (בעברית או באיטלקית)...">
+    <div id="verbList"></div>
+  </section>
+
+  <!-- ================= FLASHCARDS ================= -->
+  <section id="flash">
+    <div class="section-title">כרטיסיות לתרגול הטיות</div>
+    <div class="section-sub">בחרו פועל וזמן, נחשו את ההטיה הנכונה ואז הפכו את הכרטיס לבדיקה.</div>
+    <div class="fc-controls">
+      <select id="fcVerb"></select>
+      <select id="fcTense">
+        <option value="all">כל הזמנים</option>
+        <option value="p">הווה</option>
+        <option value="pp">עבר</option>
+        <option value="f">עתיד</option>
+      </select>
+      <button class="btn btn-gray" id="fcShuffle">🔀 ערבוב מחדש</button>
+    </div>
+    <div class="flashcard-wrap">
+      <div class="flashcard" id="flashcard">
+        <div class="flashcard-inner">
+          <div class="fc-front">
+            <div class="fc-label" id="fcFrontLabel">גוף · זמן</div>
+            <div class="fc-word" id="fcFrontWord">...</div>
+            <div class="fc-hint">לחצו כדי להפוך ולבדוק</div>
+          </div>
+          <div class="fc-back">
+            <div class="fc-label">איטלקית</div>
+            <div class="fc-word" id="fcBackWord">...</div>
+            <div class="fc-pron" id="fcBackPhon">...</div>
+          </div>
+        </div>
+      </div>
+      <div class="fc-counter" id="fcCounter">כרטיס 1 מתוך 1</div>
+      <div class="btns">
+        <button class="btn btn-gray" id="fcPrev">⏮ קודם</button>
+        <button class="btn btn-green" id="fcFlip">↻ הפוך כרטיס</button>
+        <button class="btn btn-red" id="fcNext">הבא ⏭</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CLOZE ================= -->
+  <section id="cloze">
+    <div class="section-title">השלמת משפטים</div>
+    <div class="section-sub">השלימו את הפועל החסר במשפט האיטלקי, בהתאם לגוף ולזמן המצוינים.</div>
+    <div class="fc-controls">
+      <select id="clzVerb"></select>
+      <button class="btn btn-gray" id="clzShuffle">🔀 ערבוב מחדש</button>
+    </div>
+    <div class="score-bar">
+      <div class="score-pill">✅ נכונות: <span id="clzCorrect">0</span></div>
+      <div class="score-pill">📝 סה"כ: <span id="clzTotal">0</span></div>
+      <div class="score-pill">🔥 רצף: <span id="clzStreak">0</span></div>
+    </div>
+    <div class="cloze-card">
+      <div class="cloze-meta" id="clzMeta">...</div>
+      <div class="cloze-he" id="clzHe">...</div>
+      <div class="cloze-it" id="clzIt">...</div>
+      <div class="answer-row">
+        <input type="text" id="clzInput" placeholder="הקלידו את הפועל המתאים באיטלקית..." autocomplete="off">
+        <button class="btn btn-green" id="clzCheck">בדיקה</button>
+      </div>
+      <div class="feedback" id="clzFeedback"></div>
+      <div class="btns">
+        <button class="btn btn-gray" id="clzReveal">💡 הצג תשובה</button>
+        <button class="btn btn-red" id="clzNext">הבא ⏭</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>נבנה עבור לימוד עצמי של איטלקית · תרגלו קצת כל יום 💪</footer>
+
+<script>
+/* ---------- DATA ----------
+   persons order: io, tu, lui/lei, noi, voi, loro
+   each field is "italianForm|תעתיק עברי"
+*/
+const VERBS = [
+{it:"Sapere", he:"לדעת", inf:"סא-פֶּ-רֶה",
+ p:["so|סוֹ","sai|סָאי","sa|סָא","sappiamo|סָא-פְּיָא-מוֹ","sapete|סָא-פֶּ-טֶה","sanno|סָאנ-נוֹ"],
+ pp:["ho saputo|אוֹ סָא-פּוּ-טוֹ","hai saputo|איי סָא-פּוּ-טוֹ","ha saputo|אָה סָא-פּוּ-טוֹ","abbiamo saputo|אָבּ-בְּיָא-מוֹ סָא-פּוּ-טוֹ","avete saputo|אָ-וֶה-טֶה סָא-פּוּ-טוֹ","hanno saputo|אָנ-נוֹ סָא-פּוּ-טוֹ"],
+ f:["saprò|סָא-פְּרוֹ","saprai|סָא-פְּרָאי","saprà|סָא-פְּרָא","sapremo|סָא-פְּרֶה-מוֹ","saprete|סָא-פְּרֶה-טֶה","sapranno|סָא-פְּרָאנ-נוֹ"]},
+{it:"Vedere", he:"לראות", inf:"וֶה-דֶה-רֶה",
+ p:["vedo|וֶה-דוֹ","vedi|וֶה-דִי","vede|וֶה-דֶה","vediamo|וֶה-דְיָא-מוֹ","vedete|וֶה-דֶה-טֶה","vedono|וֶה-דוֹ-נוֹ"],
+ pp:["ho visto|אוֹ וִיס-טוֹ","hai visto|איי וִיס-טוֹ","ha visto|אָה וִיס-טוֹ","abbiamo visto|אָבּ-בְּיָא-מוֹ וִיס-טוֹ","avete visto|אָ-וֶה-טֶה וִיס-טוֹ","hanno visto|אָנ-נוֹ וִיס-טוֹ"],
+ f:["vedrò|וֶה-דְרוֹ","vedrai|וֶה-דְרָאי","vedrà|וֶה-דְרָא","vedremo|וֶה-דְרֶה-מוֹ","vedrete|וֶה-דְרֶה-טֶה","vedranno|וֶה-דְרָאנ-נוֹ"]},
+{it:"Sentire", he:"לשמוע", inf:"סֶן-טִי-רֶה",
+ p:["sento|סֶן-טוֹ","senti|סֶן-טִי","sente|סֶן-טֶה","sentiamo|סֶן-טְיָא-מוֹ","sentite|סֶן-טִי-טֶה","sentono|סֶן-טוֹ-נוֹ"],
+ pp:["ho sentito|אוֹ סֶן-טִי-טוֹ","hai sentito|איי סֶן-טִי-טוֹ","ha sentito|אָה סֶן-טִי-טוֹ","abbiamo sentito|אָבּ-בְּיָא-מוֹ סֶן-טִי-טוֹ","avete sentito|אָ-וֶה-טֶה סֶן-טִי-טוֹ","hanno sentito|אָנ-נוֹ סֶן-טִי-טוֹ"],
+ f:["sentirò|סֶן-טִי-רוֹ","sentirai|סֶן-טִי-רָאי","sentirà|סֶן-טִי-רָא","sentiremo|סֶן-טִי-רֶה-מוֹ","sentirete|סֶן-טִי-רֶה-טֶה","sentiranno|סֶן-טִי-רָאנ-נוֹ"]},
+{it:"Andare", he:"ללכת", inf:"אָן-דָה-רֶה",
+ p:["vado|וָא-דוֹ","vai|וָאי","va|וָא","andiamo|אָן-דְיָא-מוֹ","andate|אָן-דָה-טֶה","vanno|וָאנ-נוֹ"],
+ pp:["sono andato/a|סוֹ-נוֹ אָן-דָה-טוֹ/טָה","sei andato/a|סֶיי אָן-דָה-טוֹ/טָה","è andato/a|אֶה אָן-דָה-טוֹ/טָה","siamo andati/e|סְיָא-מוֹ אָן-דָה-טִי/טֶה","siete andati/e|סְיֶה-טֶה אָן-דָה-טִי/טֶה","sono andati/e|סוֹ-נוֹ אָן-דָה-טִי/טֶה"],
+ f:["andrò|אָן-דְרוֹ","andrai|אָן-דְרָאי","andrà|אָן-דְרָא","andremo|אָן-דְרֶה-מוֹ","andrete|אָן-דְרֶה-טֶה","andranno|אָן-דְרָאנ-נוֹ"]},
+{it:"Venire", he:"לבוא", inf:"וֶה-נִי-רֶה",
+ p:["vengo|וֶנ-גוֹ","vieni|וְיֶה-נִי","viene|וְיֶה-נֶה","veniamo|וֶה-נְיָא-מוֹ","venite|וֶה-נִי-טֶה","vengono|וֶנ-גוֹ-נוֹ"],
+ pp:["sono venuto/a|סוֹ-נוֹ וֶה-נוּ-טוֹ/טָה","sei venuto/a|סֶיי וֶה-נוּ-טוֹ/טָה","è venuto/a|אֶה וֶה-נוּ-טוֹ/טָה","siamo venuti/e|סְיָא-מוֹ וֶה-נוּ-טִי/טֶה","siete venuti/e|סְיֶה-טֶה וֶה-נוּ-טִי/טֶה","sono venuti/e|סוֹ-נוֹ וֶה-נוּ-טִי/טֶה"],
+ f:["verrò|וֶר-רוֹ","verrai|וֶר-רָאי","verrà|וֶר-רָא","verremo|וֶר-רֶה-מוֹ","verrete|וֶר-רֶה-טֶה","verranno|וֶר-רָאנ-נוֹ"]},
+{it:"Comprare", he:"לקנות", inf:"קוֹם-פְּרָה-רֶה",
+ p:["compro|קוֹם-פְּרוֹ","compri|קוֹם-פְּרִי","compra|קוֹם-פְּרָה","compriamo|קוֹם-פְּרְיָא-מוֹ","comprate|קוֹם-פְּרָה-טֶה","comprano|קוֹם-פְּרָה-נוֹ"],
+ pp:["ho comprato|אוֹ קוֹם-פְּרָה-טוֹ","hai comprato|איי קוֹם-פְּרָה-טוֹ","ha comprato|אָה קוֹם-פְּרָה-טוֹ","abbiamo comprato|אָבּ-בְּיָא-מוֹ קוֹם-פְּרָה-טוֹ","avete comprato|אָ-וֶה-טֶה קוֹם-פְּרָה-טוֹ","hanno comprato|אָנ-נוֹ קוֹם-פְּרָה-טוֹ"],
+ f:["comprerò|קוֹם-פְּרֶה-רוֹ","comprerai|קוֹם-פְּרֶה-רָאי","comprerà|קוֹם-פְּרֶה-רָא","compreremo|קוֹם-פְּרֶה-רֶה-מוֹ","comprerete|קוֹם-פְּרֶה-רֶה-טֶה","compreranno|קוֹם-פְּרֶה-רָאנ-נוֹ"]},
+{it:"Prendere", he:"לקחת", inf:"פְּרֶן-דֶה-רֶה",
+ p:["prendo|פְּרֶן-דוֹ","prendi|פְּרֶן-דִי","prende|פְּרֶן-דֶה","prendiamo|פְּרֶן-דְיָא-מוֹ","prendete|פְּרֶן-דֶה-טֶה","prendono|פְּרֶן-דוֹ-נוֹ"],
+ pp:["ho preso|אוֹ פְּרֶה-זוֹ","hai preso|איי פְּרֶה-זוֹ","ha preso|אָה פְּרֶה-זוֹ","abbiamo preso|אָבּ-בְּיָא-מוֹ פְּרֶה-זוֹ","avete preso|אָ-וֶה-טֶה פְּרֶה-זוֹ","hanno preso|אָנ-נוֹ פְּרֶה-זוֹ"],
+ f:["prenderò|פְּרֶן-דֶה-רוֹ","prenderai|פְּרֶן-דֶה-רָאי","prenderà|פְּרֶן-דֶה-רָא","prenderemo|פְּרֶן-דֶה-רֶה-מוֹ","prenderete|פְּרֶן-דֶה-רֶה-טֶה","prenderanno|פְּרֶן-דֶה-רָאנ-נוֹ"]},
+{it:"Dare", he:"לתת", inf:"דָה-רֶה",
+ p:["do|דוֹ","dai|דָאי","dà|דָא","diamo|דְיָא-מוֹ","date|דָה-טֶה","danno|דָאנ-נוֹ"],
+ pp:["ho dato|אוֹ דָה-טוֹ","hai dato|איי דָה-טוֹ","ha dato|אָה דָה-טוֹ","abbiamo dato|אָבּ-בְּיָא-מוֹ דָה-טוֹ","avete dato|אָ-וֶה-טֶה דָה-טוֹ","hanno dato|אָנ-נוֹ דָה-טוֹ"],
+ f:["darò|דָה-רוֹ","darai|דָה-רָאי","darà|דָה-רָא","daremo|דָה-רֶה-מוֹ","darete|דָה-רֶה-טֶה","daranno|דָה-רָאנ-נוֹ"]},
+{it:"Portare", he:"להביא", inf:"פּוֹר-טָה-רֶה",
+ p:["porto|פּוֹר-טוֹ","porti|פּוֹר-טִי","porta|פּוֹר-טָה","portiamo|פּוֹר-טְיָא-מוֹ","portate|פּוֹר-טָה-טֶה","portano|פּוֹר-טָה-נוֹ"],
+ pp:["ho portato|אוֹ פּוֹר-טָה-טוֹ","hai portato|איי פּוֹר-טָה-טוֹ","ha portato|אָה פּוֹר-טָה-טוֹ","abbiamo portato|אָבּ-בְּיָא-מוֹ פּוֹר-טָה-טוֹ","avete portato|אָ-וֶה-טֶה פּוֹר-טָה-טוֹ","hanno portato|אָנ-נוֹ פּוֹר-טָה-טוֹ"],
+ f:["porterò|פּוֹר-טֶה-רוֹ","porterai|פּוֹר-טֶה-רָאי","porterà|פּוֹר-טֶה-רָא","porteremo|פּוֹר-טֶה-רֶה-מוֹ","porterete|פּוֹר-טֶה-רֶה-טֶה","porteranno|פּוֹר-טֶה-רָאנ-נוֹ"]},
+{it:"Controllare", he:"לבדוק", inf:"קוֹן-טְרוֹל-לָה-רֶה",
+ p:["controllo|קוֹן-טְרוֹל-לוֹ","controlli|קוֹן-טְרוֹל-לִי","controlla|קוֹן-טְרוֹל-לָה","controlliamo|קוֹן-טְרוֹל-לְיָא-מוֹ","controllate|קוֹן-טְרוֹל-לָה-טֶה","controllano|קוֹן-טְרוֹל-לָה-נוֹ"],
+ pp:["ho controllato|אוֹ קוֹן-טְרוֹל-לָה-טוֹ","hai controllato|איי קוֹן-טְרוֹל-לָה-טוֹ","ha controllato|אָה קוֹן-טְרוֹל-לָה-טוֹ","abbiamo controllato|אָבּ-בְּיָא-מוֹ קוֹן-טְרוֹל-לָה-טוֹ","avete controllato|אָ-וֶה-טֶה קוֹן-טְרוֹל-לָה-טוֹ","hanno controllato|אָנ-נוֹ קוֹן-טְרוֹל-לָה-טוֹ"],
+ f:["controllerò|קוֹן-טְרוֹל-לֶה-רוֹ","controllerai|קוֹן-טְרוֹל-לֶה-רָאי","controllerà|קוֹן-טְרוֹל-לֶה-רָא","controlleremo|קוֹן-טְרוֹל-לֶה-רֶה-מוֹ","controllerete|קוֹן-טְרוֹל-לֶה-רֶה-טֶה","controlleranno|קוֹן-טְרוֹל-לֶה-רָאנ-נוֹ"]},
+{it:"Raccontare", he:"לספר", inf:"רָק-קוֹן-טָה-רֶה",
+ p:["racconto|רָק-קוֹן-טוֹ","racconti|רָק-קוֹן-טִי","racconta|רָק-קוֹן-טָה","raccontiamo|רָק-קוֹן-טְיָא-מוֹ","raccontate|רָק-קוֹן-טָה-טֶה","raccontano|רָק-קוֹן-טָה-נוֹ"],
+ pp:["ho raccontato|אוֹ רָק-קוֹן-טָה-טוֹ","hai raccontato|איי רָק-קוֹן-טָה-טוֹ","ha raccontato|אָה רָק-קוֹן-טָה-טוֹ","abbiamo raccontato|אָבּ-בְּיָא-מוֹ רָק-קוֹן-טָה-טוֹ","avete raccontato|אָ-וֶה-טֶה רָק-קוֹן-טָה-טוֹ","hanno raccontato|אָנ-נוֹ רָק-קוֹן-טָה-טוֹ"],
+ f:["racconterò|רָק-קוֹן-טֶה-רוֹ","racconterai|רָק-קוֹן-טֶה-רָאי","racconterà|רָק-קוֹן-טֶה-רָא","racconteremo|רָק-קוֹן-טֶה-רֶה-מוֹ","racconterete|רָק-קוֹן-טֶה-רֶה-טֶה","racconteranno|רָק-קוֹן-טֶה-רָאנ-נוֹ"]},
+{it:"Contare", he:"לספור", inf:"קוֹן-טָה-רֶה",
+ p:["conto|קוֹן-טוֹ","conti|קוֹן-טִי","conta|קוֹן-טָה","contiamo|קוֹן-טְיָא-מוֹ","contate|קוֹן-טָה-טֶה","contano|קוֹן-טָה-נוֹ"],
+ pp:["ho contato|אוֹ קוֹן-טָה-טוֹ","hai contato|איי קוֹן-טָה-טוֹ","ha contato|אָה קוֹן-טָה-טוֹ","abbiamo contato|אָבּ-בְּיָא-מוֹ קוֹן-טָה-טוֹ","avete contato|אָ-וֶה-טֶה קוֹן-טָה-טוֹ","hanno contato|אָנ-נוֹ קוֹן-טָה-טוֹ"],
+ f:["conterò|קוֹן-טֶה-רוֹ","conterai|קוֹן-טֶה-רָאי","conterà|קוֹן-טֶה-רָא","conteremo|קוֹן-טֶה-רֶה-מוֹ","conterete|קוֹן-טֶה-רֶה-טֶה","conteranno|קוֹן-טֶה-רָאנ-נוֹ"]},
+{it:"Mostrare", he:"להראות", inf:"מוֹס-טְרָה-רֶה",
+ p:["mostro|מוֹס-טְרוֹ","mostri|מוֹס-טְרִי","mostra|מוֹס-טְרָה","mostriamo|מוֹס-טְרְיָא-מוֹ","mostrate|מוֹס-טְרָה-טֶה","mostrano|מוֹס-טְרָה-נוֹ"],
+ pp:["ho mostrato|אוֹ מוֹס-טְרָה-טוֹ","hai mostrato|איי מוֹס-טְרָה-טוֹ","ha mostrato|אָה מוֹס-טְרָה-טוֹ","abbiamo mostrato|אָבּ-בְּיָא-מוֹ מוֹס-טְרָה-טוֹ","avete mostrato|אָ-וֶה-טֶה מוֹס-טְרָה-טוֹ","hanno mostrato|אָנ-נוֹ מוֹס-טְרָה-טוֹ"],
+ f:["mostrerò|מוֹס-טְרֶה-רוֹ","mostrerai|מוֹס-טְרֶה-רָאי","mostrerà|מוֹס-טְרֶה-רָא","mostreremo|מוֹס-טְרֶה-רֶה-מוֹ","mostrerete|מוֹס-טְרֶה-רֶה-טֶה","mostreranno|מוֹס-טְרֶה-רָאנ-נוֹ"]},
+{it:"Capire", he:"להבין", inf:"קָא-פִּי-רֶה",
+ p:["capisco|קָא-פִּיס-קוֹ","capisci|קָא-פִּי-שִׁי","capisce|קָא-פִּי-שֶׁה","capiamo|קָא-פְּיָא-מוֹ","capite|קָא-פִּי-טֶה","capiscono|קָא-פִּיס-קוֹ-נוֹ"],
+ pp:["ho capito|אוֹ קָא-פִּי-טוֹ","hai capito|איי קָא-פִּי-טוֹ","ha capito|אָה קָא-פִּי-טוֹ","abbiamo capito|אָבּ-בְּיָא-מוֹ קָא-פִּי-טוֹ","avete capito|אָ-וֶה-טֶה קָא-פִּי-טוֹ","hanno capito|אָנ-נוֹ קָא-פִּי-טוֹ"],
+ f:["capirò|קָא-פִּי-רוֹ","capirai|קָא-פִּי-רָאי","capirà|קָא-פִּי-רָא","capiremo|קָא-פִּי-רֶה-מוֹ","capirete|קָא-פִּי-רֶה-טֶה","capiranno|קָא-פִּי-רָאנ-נוֹ"]},
+{it:"Parlare", he:"לדבר", inf:"פַּאר-לָה-רֶה",
+ p:["parlo|פַּאר-לוֹ","parli|פַּאר-לִי","parla|פַּאר-לָה","parliamo|פַּאר-לְיָא-מוֹ","parlate|פַּאר-לָה-טֶה","parlano|פַּאר-לָה-נוֹ"],
+ pp:["ho parlato|אוֹ פַּאר-לָה-טוֹ","hai parlato|איי פַּאר-לָה-טוֹ","ha parlato|אָה פַּאר-לָה-טוֹ","abbiamo parlato|אָבּ-בְּיָא-מוֹ פַּאר-לָה-טוֹ","avete parlato|אָ-וֶה-טֶה פַּאר-לָה-טוֹ","hanno parlato|אָנ-נוֹ פַּאר-לָה-טוֹ"],
+ f:["parlerò|פַּאר-לֶה-רוֹ","parlerai|פַּאר-לֶה-רָאי","parlerà|פַּאר-לֶה-רָא","parleremo|פַּאר-לֶה-רֶה-מוֹ","parlerete|פַּאר-לֶה-רֶה-טֶה","parleranno|פַּאר-לֶה-רָאנ-נוֹ"]},
+{it:"Mangiare", he:"לאכול", inf:"מָאן-גָ'ה-רֶה",
+ p:["mangio|מָאן-ג'וֹ","mangi|מָאן-גִ'י","mangia|מָאן-גָ'ה","mangiamo|מָאן-גָ'ה-מוֹ","mangiate|מָאן-גָ'ה-טֶה","mangiano|מָאן-גָ'ה-נוֹ"],
+ pp:["ho mangiato|אוֹ מָאן-גָ'ה-טוֹ","hai mangiato|איי מָאן-גָ'ה-טוֹ","ha mangiato|אָה מָאן-גָ'ה-טוֹ","abbiamo mangiato|אָבּ-בְּיָא-מוֹ מָאן-גָ'ה-טוֹ","avete mangiato|אָ-וֶה-טֶה מָאן-גָ'ה-טוֹ","hanno mangiato|אָנ-נוֹ מָאן-גָ'ה-טוֹ"],
+ f:["mangerò|מָאן-גֶ'ה-רוֹ","mangerai|מָאן-גֶ'ה-רָאי","mangerà|מָאן-גֶ'ה-רָא","mangeremo|מָאן-גֶ'ה-רֶה-מוֹ","mangerete|מָאן-גֶ'ה-רֶה-טֶה","mangeranno|מָאן-גֶ'ה-רָאנ-נוֹ"]},
+{it:"Viaggiare", he:"לנסוע / לטייל", inf:"וְיָאד-גָ'ה-רֶה",
+ p:["viaggio|וְיָאד-ג'וֹ","viaggi|וְיָאד-גִ'י","viaggia|וְיָאד-גָ'ה","viaggiamo|וְיָאד-גָ'ה-מוֹ","viaggiate|וְיָאד-גָ'ה-טֶה","viaggiano|וְיָאד-גָ'ה-נוֹ"],
+ pp:["ho viaggiato|אוֹ וְיָאד-גָ'ה-טוֹ","hai viaggiato|איי וְיָאד-גָ'ה-טוֹ","ha viaggiato|אָה וְיָאד-גָ'ה-טוֹ","abbiamo viaggiato|אָבּ-בְּיָא-מוֹ וְיָאד-גָ'ה-טוֹ","avete viaggiato|אָ-וֶה-טֶה וְיָאד-גָ'ה-טוֹ","hanno viaggiato|אָנ-נוֹ וְיָאד-גָ'ה-טוֹ"],
+ f:["viaggerò|וְיָאד-גֶ'ה-רוֹ","viaggerai|וְיָאד-גֶ'ה-רָאי","viaggerà|וְיָאד-גֶ'ה-רָא","viaggeremo|וְיָאד-גֶ'ה-רֶה-מוֹ","viaggerete|וְיָאד-גֶ'ה-רֶה-טֶה","viaggeranno|וְיָאד-גֶ'ה-רָאנ-נוֹ"]},
+];
+
+const PERSONS = ["Io (אני)","Tu (אתה/את)","Lui/Lei (הוא/היא)","Noi (אנחנו)","Voi (אתם/ן)","Loro (הם/ן)"];
+const TENSES = {p:"הווה (Presente)", pp:"עבר (Passato Prossimo)", f:"עתיד (Futuro Semplice)"};
+const TENSE_CLASS = {p:"tense-present", pp:"tense-past", f:"tense-future"};
+
+function parseForm(str){ const [it, phon] = str.split("|"); return {it, phon}; }
+
+/* ---------- CLOZE SENTENCE BANK ---------- */
+const CLOZE = [
+// Capire (10)
+{verb:"Capire", tense:"p", person:0, he:"(אני, הווה) אני ___ קצת איטלקית.", it:"Io ___ un po' di italiano.", ans:"capisco"},
+{verb:"Capire", tense:"p", person:1, he:"(אתה, הווה) האם אתה ___ אותי?", it:"Tu mi ___?", ans:"capisci"},
+{verb:"Capire", tense:"p", person:2, he:"(היא, הווה) היא לא ___ את השאלה.", it:"Lei non ___ la domanda.", ans:"capisce"},
+{verb:"Capire", tense:"p", person:3, he:"(אנחנו, הווה) אנחנו ___ את המורה.", it:"Noi ___ l'insegnante.", ans:"capiamo"},
+{verb:"Capire", tense:"p", person:4, he:"(אתם, הווה) האם אתם ___ למה?", it:"Voi ___ perché?", ans:"capite"},
+{verb:"Capire", tense:"p", person:5, he:"(הם, הווה) הם ___ הכל.", it:"Loro ___ tutto.", ans:"capiscono"},
+{verb:"Capire", tense:"pp", person:0, he:"(אני, עבר) אתמול ___ את השיעור.", it:"Ieri ___ la lezione.", ans:"ho capito"},
+{verb:"Capire", tense:"pp", person:4, he:"(אתם, עבר) האם ___ מה קרה?", it:"___ cosa è successo?", ans:"avete capito"},
+{verb:"Capire", tense:"f", person:0, he:"(אני, עתיד) מחר אני ___ יותר טוב.", it:"Domani ___ meglio.", ans:"capirò"},
+{verb:"Capire", tense:"f", person:5, he:"(הם, עתיד) הם ___ את הבעיה בקרוב.", it:"Loro ___ il problema presto.", ans:"capiranno"},
+// Parlare (10)
+{verb:"Parlare", tense:"p", person:0, he:"(אני, הווה) אני ___ עם אמא שלי.", it:"Io ___ con mia madre.", ans:"parlo"},
+{verb:"Parlare", tense:"p", person:1, he:"(אתה, הווה) האם אתה ___ אנגלית?", it:"Tu ___ inglese?", ans:"parli"},
+{verb:"Parlare", tense:"p", person:2, he:"(הוא, הווה) הוא ___ מהר מאוד.", it:"Lui ___ molto velocemente.", ans:"parla"},
+{verb:"Parlare", tense:"p", person:3, he:"(אנחנו, הווה) אנחנו ___ על הסרט.", it:"Noi ___ del film.", ans:"parliamo"},
+{verb:"Parlare", tense:"p", person:4, he:"(אתם, הווה) אתם ___ בשקט.", it:"Voi ___ piano.", ans:"parlate"},
+{verb:"Parlare", tense:"p", person:5, he:"(הם, הווה) הם ___ הרבה.", it:"Loro ___ molto.", ans:"parlano"},
+{verb:"Parlare", tense:"pp", person:0, he:"(אני, עבר) אתמול ___ עם דוד שלי.", it:"Ieri ___ con mio zio.", ans:"ho parlato"},
+{verb:"Parlare", tense:"pp", person:2, he:"(היא, עבר) היא ___ איתו בטלפון.", it:"Lei ___ con lui al telefono.", ans:"ha parlato"},
+{verb:"Parlare", tense:"f", person:3, he:"(אנחנו, עתיד) מחר אנחנו ___ על זה.", it:"Domani ne ___.", ans:"parleremo"},
+{verb:"Parlare", tense:"f", person:0, he:"(אני, עתיד) אני ___ איתך מאוחר יותר.", it:"Io ti ___ più tardi.", ans:"parlerò"},
+// Mangiare (10)
+{verb:"Mangiare", tense:"p", person:0, he:"(אני, הווה) אני ___ פיצה עכשיו.", it:"Io ___ una pizza adesso.", ans:"mangio"},
+{verb:"Mangiare", tense:"p", person:1, he:"(אתה, הווה) מה אתה ___?", it:"Cosa ___ tu?", ans:"mangi"},
+{verb:"Mangiare", tense:"p", person:2, he:"(היא, הווה) היא ___ תפוח.", it:"Lei ___ una mela.", ans:"mangia"},
+{verb:"Mangiare", tense:"p", person:3, he:"(אנחנו, הווה) אנחנו ___ במסעדה.", it:"Noi ___ al ristorante.", ans:"mangiamo"},
+{verb:"Mangiare", tense:"p", person:4, he:"(אתם, הווה) אתם ___ פסטה.", it:"Voi ___ la pasta.", ans:"mangiate"},
+{verb:"Mangiare", tense:"p", person:5, he:"(הם, הווה) הם ___ יחד.", it:"Loro ___ insieme.", ans:"mangiano"},
+{verb:"Mangiare", tense:"pp", person:0, he:"(אני, עבר) אתמול ___ גלידה.", it:"Ieri ___ un gelato.", ans:"ho mangiato"},
+{verb:"Mangiare", tense:"pp", person:3, he:"(אנחנו, עבר) אנחנו ___ הכל.", it:"Noi ___ tutto.", ans:"abbiamo mangiato"},
+{verb:"Mangiare", tense:"f", person:0, he:"(אני, עתיד) מחר אני ___ במסעדה חדשה.", it:"Domani ___ in un nuovo ristorante.", ans:"mangerò"},
+{verb:"Mangiare", tense:"f", person:5, he:"(הם, עתיד) הם ___ ארוחת ערב בבית.", it:"Loro ___ la cena a casa.", ans:"mangeranno"},
+// Other 14 verbs, 3 sentences each
+{verb:"Sapere", tense:"p", person:0, he:"(אני, הווה) אני לא ___ את התשובה.", it:"Io non ___ la risposta.", ans:"so"},
+{verb:"Sapere", tense:"pp", person:3, he:"(אנחנו, עבר) אתמול ___ את החדשות.", it:"Ieri ___ la notizia.", ans:"abbiamo saputo"},
+{verb:"Sapere", tense:"f", person:1, he:"(אתה, עתיד) מחר אתה ___ יותר.", it:"Domani tu ___ di più.", ans:"saprai"},
+{verb:"Vedere", tense:"p", person:0, he:"(אני, הווה) אני ___ את הים מהחלון.", it:"Io ___ il mare dalla finestra.", ans:"vedo"},
+{verb:"Vedere", tense:"pp", person:5, he:"(הם, עבר) אתמול הם ___ סרט יפה.", it:"Ieri loro ___ un bel film.", ans:"hanno visto"},
+{verb:"Vedere", tense:"f", person:3, he:"(אנחנו, עתיד) מחר אנחנו ___ את הסבתא.", it:"Domani ___ la nonna.", ans:"vedremo"},
+{verb:"Sentire", tense:"p", person:1, he:"(אתה, הווה) האם אתה ___ את המוזיקה?", it:"Tu ___ la musica?", ans:"senti"},
+{verb:"Sentire", tense:"pp", person:0, he:"(אני, עבר) אתמול ___ סיפור מעניין.", it:"Ieri ___ una storia interessante.", ans:"ho sentito"},
+{verb:"Sentire", tense:"f", person:5, he:"(הם, עתיד) מחר הם ___ את התשובה.", it:"Domani loro ___ la risposta.", ans:"sentiranno"},
+{verb:"Andare", tense:"p", person:3, he:"(אנחנו, הווה) כל יום אנחנו ___ לעבודה.", it:"Ogni giorno ___ al lavoro.", ans:"andiamo"},
+{verb:"Andare", tense:"pp", person:2, he:"(היא, עבר) אתמול היא ___ לשוק.", it:"Ieri lei ___ al mercato.", ans:"è andata"},
+{verb:"Andare", tense:"f", person:0, he:"(אני, עתיד) מחר אני ___ לרומא.", it:"Domani io ___ a Roma.", ans:"andrò"},
+{verb:"Venire", tense:"p", person:4, he:"(אתם, הווה) האם אתם ___ למסיבה?", it:"Voi ___ alla festa?", ans:"venite"},
+{verb:"Venire", tense:"pp", person:2, he:"(הוא, עבר) אתמול הוא ___ לבקר אותנו.", it:"Ieri lui ___ a trovarci.", ans:"è venuto"},
+{verb:"Venire", tense:"f", person:0, he:"(אני, עתיד) מחר אני ___ מוקדם.", it:"Domani io ___ presto.", ans:"verrò"},
+{verb:"Comprare", tense:"p", person:1, he:"(אתה, הווה) מה אתה ___ בשוק?", it:"Cosa ___ tu al mercato?", ans:"compri"},
+{verb:"Comprare", tense:"pp", person:3, he:"(אנחנו, עבר) אתמול ___ מתנה יפה.", it:"Ieri ___ un bel regalo.", ans:"abbiamo comprato"},
+{verb:"Comprare", tense:"f", person:5, he:"(הם, עתיד) מחר הם ___ בית חדש.", it:"Domani loro ___ una casa nuova.", ans:"compreranno"},
+{verb:"Prendere", tense:"p", person:0, he:"(אני, הווה) בבוקר אני תמיד ___ קפה.", it:"La mattina io ___ sempre un caffè.", ans:"prendo"},
+{verb:"Prendere", tense:"pp", person:2, he:"(היא, עבר) אתמול היא ___ את המפתחות.", it:"Ieri lei ___ le chiavi.", ans:"ha preso"},
+{verb:"Prendere", tense:"f", person:3, he:"(אנחנו, עתיד) מחר אנחנו ___ את הרכבת.", it:"Domani ___ il treno.", ans:"prenderemo"},
+{verb:"Dare", tense:"p", person:0, he:"(אני, הווה) אני ___ לך את הספר.", it:"Io ti ___ il libro.", ans:"do"},
+{verb:"Dare", tense:"pp", person:1, he:"(אתה, עבר) אתמול ___ לי עצה טובה.", it:"Ieri tu mi ___ un buon consiglio.", ans:"hai dato"},
+{verb:"Dare", tense:"f", person:5, he:"(הם, עתיד) מחר הם ___ את התשובה הסופית.", it:"Domani loro ___ la risposta finale.", ans:"daranno"},
+{verb:"Portare", tense:"p", person:3, he:"(אנחנו, הווה) אנחנו תמיד ___ מים לטיול.", it:"Noi ___ sempre acqua per la gita.", ans:"portiamo"},
+{verb:"Portare", tense:"pp", person:0, he:"(אני, עבר) אתמול ___ עוגה למסיבה.", it:"Ieri ___ una torta alla festa.", ans:"ho portato"},
+{verb:"Portare", tense:"f", person:1, he:"(אתה, עתיד) מחר אתה ___ את המסמכים?", it:"Domani tu ___ i documenti?", ans:"porterai"},
+{verb:"Controllare", tense:"p", person:2, he:"(הוא, הווה) הוא ___ את המייל כל בוקר.", it:"Lui ___ la mail ogni mattina.", ans:"controlla"},
+{verb:"Controllare", tense:"pp", person:3, he:"(אנחנו, עבר) אתמול ___ את המחירים.", it:"Ieri ___ i prezzi.", ans:"abbiamo controllato"},
+{verb:"Controllare", tense:"f", person:0, he:"(אני, עתיד) מחר אני ___ את הפרטים.", it:"Domani io ___ i dettagli.", ans:"controllerò"},
+{verb:"Raccontare", tense:"p", person:1, he:"(אתה, הווה) מה אתה ___ לי עכשיו?", it:"Cosa mi ___ tu adesso?", ans:"racconti"},
+{verb:"Raccontare", tense:"pp", person:2, he:"(היא, עבר) אתמול היא ___ בדיחה מצחיקה.", it:"Ieri lei ___ una barzelletta divertente.", ans:"ha raccontato"},
+{verb:"Raccontare", tense:"f", person:3, he:"(אנחנו, עתיד) מחר אנחנו ___ הכל להם.", it:"Domani ___ tutto a loro.", ans:"racconteremo"},
+{verb:"Contare", tense:"p", person:0, he:"(אני, הווה) אני ___ עד עשר.", it:"Io ___ fino a dieci.", ans:"conto"},
+{verb:"Contare", tense:"pp", person:5, he:"(הם, עבר) אתמול הם ___ את הכסף.", it:"Ieri loro ___ i soldi.", ans:"hanno contato"},
+{verb:"Contare", tense:"f", person:1, he:"(אתה, עתיד) מחר אתה ___ את הימים?", it:"Domani tu ___ i giorni?", ans:"conterai"},
+{verb:"Mostrare", tense:"p", person:0, he:"(אני, הווה) אני ___ לך תמונה יפה.", it:"Io ti ___ una bella foto.", ans:"mostro"},
+{verb:"Mostrare", tense:"pp", person:3, he:"(אנחנו, עבר) אתמול ___ להם את הדירה.", it:"Ieri ___ loro l'appartamento.", ans:"abbiamo mostrato"},
+{verb:"Mostrare", tense:"f", person:2, he:"(הוא, עתיד) מחר הוא ___ את הפרויקט.", it:"Domani lui ___ il progetto.", ans:"mostrerà"},
+{verb:"Viaggiare", tense:"p", person:3, he:"(אנחנו, הווה) בקיץ אנחנו ___ הרבה.", it:"In estate ___ molto.", ans:"viaggiamo"},
+{verb:"Viaggiare", tense:"pp", person:0, he:"(אני, עבר) אשתקד ___ באיטליה.", it:"L'anno scorso ___ in Italia.", ans:"ho viaggiato"},
+{verb:"Viaggiare", tense:"f", person:5, he:"(הם, עתיד) בקיץ הבא הם ___ ליוון.", it:"La prossima estate loro ___ in Grecia.", ans:"viaggeranno"},
+];
+
+/* ---------- BROWSE SECTION ---------- */
+const verbListEl = document.getElementById('verbList');
+function renderVerbList(filter=""){
+  verbListEl.innerHTML = "";
+  const f = filter.trim().toLowerCase();
+  VERBS.forEach((v, idx) => {
+    if(f && !v.he.includes(filter.trim()) && !v.it.toLowerCase().includes(f)) return;
+    const card = document.createElement('div');
+    card.className = 'verb-card';
+    card.innerHTML = `
+      <div class="verb-head">
+        <div>
+          <span class="heb">${v.he}</span> &nbsp;
+          <span class="ita">${v.it}</span> &nbsp;
+          <span class="phon">(${v.inf})</span>
+        </div>
+        <span class="arrow">▾</span>
+      </div>
+      <div class="conj-wrap">
+        <table class="conj">
+          <thead><tr><th>זמן</th>${PERSONS.map(p=>`<th>${p}</th>`).join("")}</tr></thead>
+          <tbody>
+            ${["p","pp","f"].map(t => {
+              const forms = v[t].map(parseForm);
+              return `<tr class="${TENSE_CLASS[t]}">
+                <td>${TENSES[t]}</td>
+                ${forms.map(fm => `<td>${fm.it}<small>${fm.phon}</small></td>`).join("")}
+              </tr>`;
+            }).join("")}
+          </tbody>
+        </table>
+      </div>`;
+    card.querySelector('.verb-head').addEventListener('click', () => card.classList.toggle('open'));
+    verbListEl.appendChild(card);
+  });
+}
+renderVerbList();
+document.getElementById('searchBox').addEventListener('input', e => renderVerbList(e.target.value));
+
+/* ---------- NAV ---------- */
+document.querySelectorAll('nav button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('main section').forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.sec).classList.add('active');
+  });
+});
+
+/* ---------- FLASHCARDS ---------- */
+const fcVerbSel = document.getElementById('fcVerb');
+fcVerbSel.innerHTML = `<option value="all">כל הפעלים</option>` +
+  VERBS.map((v,i)=>`<option value="${i}">${v.he} — ${v.it}</option>`).join("");
+const fcTenseSel = document.getElementById('fcTense');
+
+let fcDeck = [], fcIndex = 0;
+function buildDeck(){
+  const verbSel = fcVerbSel.value;
+  const tenseSel = fcTenseSel.value;
+  const verbIdxs = verbSel === "all" ? VERBS.map((_,i)=>i) : [parseInt(verbSel)];
+  const tenses = tenseSel === "all" ? ["p","pp","f"] : [tenseSel];
+  fcDeck = [];
+  verbIdxs.forEach(vi => {
+    tenses.forEach(t => {
+      VERBS[vi][t].forEach((formStr, pi) => {
+        fcDeck.push({vi, t, pi, form: parseForm(formStr)});
+      });
+    });
+  });
+  // shuffle
+  for(let i=fcDeck.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [fcDeck[i],fcDeck[j]]=[fcDeck[j],fcDeck[i]];
+  }
+  fcIndex = 0;
+  showCard();
+}
+const flashcardEl = document.getElementById('flashcard');
+function showCard(){
+  flashcardEl.classList.remove('flipped');
+  if(fcDeck.length === 0){
+    document.getElementById('fcFrontLabel').textContent = "אין כרטיסים";
+    document.getElementById('fcFrontWord').textContent = "-";
+    document.getElementById('fcCounter').textContent = "0 מתוך 0";
+    return;
+  }
+  const c = fcDeck[fcIndex];
+  const v = VERBS[c.vi];
+  document.getElementById('fcFrontLabel').textContent = `${PERSONS[c.pi]} · ${TENSES[c.t]}`;
+  document.getElementById('fcFrontWord').textContent = `${v.he} (${v.it})`;
+  document.getElementById('fcBackWord').textContent = c.form.it;
+  document.getElementById('fcBackPhon').textContent = c.form.phon;
+  document.getElementById('fcCounter').textContent = `כרטיס ${fcIndex+1} מתוך ${fcDeck.length}`;
+}
+flashcardEl.addEventListener('click', ()=> flashcardEl.classList.toggle('flipped'));
+document.getElementById('fcFlip').addEventListener('click', ()=> flashcardEl.classList.toggle('flipped'));
+document.getElementById('fcNext').addEventListener('click', ()=>{
+  if(fcDeck.length===0) return;
+  fcIndex = (fcIndex+1) % fcDeck.length;
+  showCard();
+});
+document.getElementById('fcPrev').addEventListener('click', ()=>{
+  if(fcDeck.length===0) return;
+  fcIndex = (fcIndex-1+fcDeck.length) % fcDeck.length;
+  showCard();
+});
+document.getElementById('fcShuffle').addEventListener('click', buildDeck);
+fcVerbSel.addEventListener('change', buildDeck);
+fcTenseSel.addEventListener('change', buildDeck);
+buildDeck();
+
+/* ---------- CLOZE ---------- */
+const clzVerbSel = document.getElementById('clzVerb');
+const clozeVerbNames = [...new Set(CLOZE.map(c=>c.verb))];
+clzVerbSel.innerHTML = `<option value="all">כל הפעלים</option>` +
+  clozeVerbNames.map(name => {
+    const v = VERBS.find(x=>x.it===name);
+    return `<option value="${name}">${v.he} — ${v.it}</option>`;
+  }).join("");
+
+let clzDeck = [], clzIndex = 0;
+let clzStats = {correct:0, total:0, streak:0};
+
+function stripDiacritics(s){
+  return s.normalize("NFD").replace(/[̀-ͯ]/g, "");
+}
+function normalizeAnswer(s){
+  return stripDiacritics(s.trim().toLowerCase()).replace(/\s+/g," ").replace(/['’]/g,"'");
+}
+
+function buildClozeDeck(){
+  const sel = clzVerbSel.value;
+  clzDeck = sel === "all" ? [...CLOZE] : CLOZE.filter(c=>c.verb===sel);
+  for(let i=clzDeck.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [clzDeck[i],clzDeck[j]]=[clzDeck[j],clzDeck[i]];
+  }
+  clzIndex = 0;
+  clzStats = {correct:0, total:0, streak:0};
+  updateScoreBar();
+  showClozeItem();
+}
+function updateScoreBar(){
+  document.getElementById('clzCorrect').textContent = clzStats.correct;
+  document.getElementById('clzTotal').textContent = clzStats.total;
+  document.getElementById('clzStreak').textContent = clzStats.streak;
+}
+function showClozeItem(){
+  const fb = document.getElementById('clzFeedback');
+  fb.className = 'feedback';
+  fb.textContent = '';
+  document.getElementById('clzInput').value = '';
+  document.getElementById('clzInput').disabled = false;
+  document.getElementById('clzCheck').disabled = false;
+  if(clzDeck.length === 0){
+    document.getElementById('clzMeta').textContent = 'אין משפטים זמינים';
+    document.getElementById('clzHe').textContent = '';
+    document.getElementById('clzIt').innerHTML = '';
+    return;
+  }
+  const item = clzDeck[clzIndex];
+  const v = VERBS.find(x=>x.it===item.verb);
+  document.getElementById('clzMeta').textContent = `פועל: ${v.he} (${v.it}) · ${TENSES[item.tense]} · ${PERSONS[item.person]}   —   משפט ${clzIndex+1} מתוך ${clzDeck.length}`;
+  document.getElementById('clzHe').textContent = item.he;
+  document.getElementById('clzIt').innerHTML = item.it.replace('___', '<span class="blank">______</span>');
+  document.getElementById('clzInput').focus();
+}
+function checkAnswer(){
+  const item = clzDeck[clzIndex];
+  const input = document.getElementById('clzInput');
+  const userVal = input.value;
+  if(!userVal.trim()) return;
+  const fb = document.getElementById('clzFeedback');
+  const correct = normalizeAnswer(userVal) === normalizeAnswer(item.ans);
+  clzStats.total++;
+  if(correct){
+    clzStats.correct++;
+    clzStats.streak++;
+    fb.className = 'feedback ok';
+    fb.innerHTML = `✅ נכון! <span class="correct-ans">${item.ans}</span>`;
+  } else {
+    clzStats.streak = 0;
+    fb.className = 'feedback bad';
+    fb.innerHTML = `❌ לא בדיוק. התשובה הנכונה: <span class="correct-ans">${item.ans}</span>`;
+  }
+  updateScoreBar();
+  input.disabled = true;
+  document.getElementById('clzCheck').disabled = true;
+}
+document.getElementById('clzCheck').addEventListener('click', checkAnswer);
+document.getElementById('clzInput').addEventListener('keydown', e => { if(e.key==='Enter') checkAnswer(); });
+document.getElementById('clzReveal').addEventListener('click', ()=>{
+  const item = clzDeck[clzIndex];
+  const fb = document.getElementById('clzFeedback');
+  fb.className = 'feedback bad';
+  fb.innerHTML = `💡 התשובה: <span class="correct-ans">${item.ans}</span>`;
+  document.getElementById('clzInput').disabled = true;
+  document.getElementById('clzCheck').disabled = true;
+});
+document.getElementById('clzNext').addEventListener('click', ()=>{
+  if(clzDeck.length===0) return;
+  clzIndex = (clzIndex+1) % clzDeck.length;
+  if(clzIndex === 0){
+    for(let i=clzDeck.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [clzDeck[i],clzDeck[j]]=[clzDeck[j],clzDeck[i]];
+    }
+  }
+  showClozeItem();
+});
+document.getElementById('clzShuffle').addEventListener('click', buildClozeDeck);
+clzVerbSel.addEventListener('change', buildClozeDeck);
+buildClozeDeck();
+</script>
+</body>
+</html>
