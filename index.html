@@ -113,9 +113,25 @@
   tr.tense-past td:first-child{color:var(--dusty-rose); font-weight:700;}
   tr.tense-future td:first-child{color:var(--sage-teal); font-weight:700;}
   :root[data-theme="dark"] tr.tense-present td:first-child{color:#7FA1D9;}
-  .legend{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:18px; font-size:.83em; font-family:var(--font-mono);}
+  .legend{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:10px; font-size:.83em; font-family:var(--font-mono);}
   .legend span{display:flex; align-items:center; gap:7px;}
   .dot{width:9px; height:9px; border-radius:50%; display:inline-block;}
+  .tts-note{font-size:.78em; color:var(--muted); margin-bottom:14px; display:none;}
+  .tts-note.show{display:block;}
+
+  /* ---- Speaker buttons (pronunciation) ---- */
+  .speak-btn{
+    display:inline-flex; align-items:center; justify-content:center; flex:none;
+    width:24px; height:24px; border:none; background:transparent; color:var(--ochre);
+    cursor:pointer; border-radius:50%; padding:0; transition:background .15s, color .15s, transform .15s;
+  }
+  .speak-btn:hover{background:rgba(217,164,65,.16); transform:scale(1.08);}
+  .speak-btn:active{transform:scale(.94);}
+  .speak-btn:focus-visible{outline:2px solid var(--ochre); outline-offset:1px;}
+  .speak-btn.playing{color:var(--sage-teal);}
+  body.no-tts .speak-btn, body.no-tts #clzSpeak{display:none;}
+  .head-right{display:flex; align-items:center; gap:4px;}
+  .cell-form{display:flex; align-items:center; justify-content:center; gap:3px;}
 
   /* Flashcards — boarding-pass ticket */
   .fc-controls{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px; align-items:center;}
@@ -142,10 +158,14 @@
     padding:22px; text-align:center;
   }
   .fc-front{background:var(--board-navy-2); color:#F4F1E6;}
-  .fc-back{background:var(--dusty-rose); color:#FBF3EE; transform:rotateY(180deg);}
+  .fc-back{background:var(--dusty-rose); color:#FBF3EE; transform:rotateY(180deg); pointer-events:none;}
+  .flashcard.flipped .fc-back{pointer-events:auto;}
   .fc-front::after, .fc-back::after{
     content:''; position:absolute; inset-inline:22px; top:50%; border-top:2px dashed rgba(255,255,255,.35);
   }
+  .fc-word-row{display:flex; align-items:center; justify-content:center; gap:10px;}
+  .fc-back .speak-btn{color:#fff;}
+  .fc-back .speak-btn:hover{background:rgba(255,255,255,.22);}
   .fc-label{font-size:.76em; opacity:.8; margin-bottom:10px; font-family:var(--font-mono); letter-spacing:.12em; text-transform:uppercase;}
   .fc-word{font-size:1.7em; font-weight:800; font-family:var(--font-display); text-wrap:balance;}
   .fc-pron{font-size:1em; margin-top:10px; opacity:.9; font-family:var(--font-mono);}
@@ -214,10 +234,11 @@
     <div class="section-title">עיון בכל הפעלים</div>
     <div class="section-sub">לחצו על פועל כדי לראות את הטיותיו המלאות בכל הגופים והזמנים.</div>
     <div class="legend">
-      <span><span class="dot" style="background:var(--present)"></span> הווה (Presente)</span>
-      <span><span class="dot" style="background:var(--past)"></span> עבר (Passato Prossimo)</span>
-      <span><span class="dot" style="background:var(--future)"></span> עתיד (Futuro Semplice)</span>
+      <span><span class="dot" style="background:var(--board-navy-2)"></span> הווה (Presente)</span>
+      <span><span class="dot" style="background:var(--dusty-rose)"></span> עבר (Passato Prossimo)</span>
+      <span><span class="dot" style="background:var(--sage-teal)"></span> עתיד (Futuro Semplice)</span>
     </div>
+    <div class="tts-note" id="ttsNote"></div>
     <input class="search-box" id="searchBox" placeholder="חיפוש פועל (בעברית או באיטלקית)...">
     <div id="verbList"></div>
   </section>
@@ -246,7 +267,12 @@
           </div>
           <div class="fc-back">
             <div class="fc-label">איטלקית</div>
-            <div class="fc-word" id="fcBackWord">...</div>
+            <div class="fc-word-row">
+              <div class="fc-word" id="fcBackWord">...</div>
+              <button class="speak-btn" id="fcSpeak" data-speak="" title="השמע הגייה" aria-label="השמע הגייה">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+              </button>
+            </div>
             <div class="fc-pron" id="fcBackPhon">...</div>
           </div>
         </div>
@@ -283,6 +309,10 @@
       </div>
       <div class="feedback" id="clzFeedback"></div>
       <div class="btns">
+        <button class="btn btn-gray" id="clzSpeak" data-speak="">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px; margin-inline-end:4px;"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+          השמע משפט
+        </button>
         <button class="btn btn-gray" id="clzReveal">הצג תשובה</button>
         <button class="btn btn-red" id="clzNext">הבא</button>
       </div>
@@ -374,6 +404,52 @@ const TENSES = {p:"הווה (Presente)", pp:"עבר (Passato Prossimo)", f:"עת
 const TENSE_CLASS = {p:"tense-present", pp:"tense-past", f:"tense-future"};
 
 function parseForm(str){ const [it, phon] = str.split("|"); return {it, phon}; }
+
+const SPEAK_ICON = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>`;
+
+/* ---------- PRONUNCIATION (Web Speech API) ---------- */
+const TTS_SUPPORTED = 'speechSynthesis' in window;
+let italianVoice = null;
+function pickItalianVoice(){
+  if(!TTS_SUPPORTED) return;
+  const voices = window.speechSynthesis.getVoices();
+  italianVoice = voices.find(v => /^it/i.test(v.lang)) || null;
+}
+if(TTS_SUPPORTED){
+  pickItalianVoice();
+  window.speechSynthesis.onvoiceschanged = pickItalianVoice;
+} else {
+  document.body.classList.add('no-tts');
+}
+const ttsNote = document.getElementById('ttsNote');
+if(ttsNote){
+  if(!TTS_SUPPORTED){
+    ttsNote.textContent = 'הדפדפן שלך אינו תומך בהשמעה קולית — האפליקציה תעבוד, אך ללא הגייה.';
+    ttsNote.classList.add('show');
+  } else {
+    ttsNote.textContent = 'לחצו על סמל הרמקול ליד כל צורת פועל כדי לשמוע את ההגייה הנכונה.';
+    ttsNote.classList.add('show');
+  }
+}
+function speechClean(text){
+  // strip gender-variant endings like "andato/a" -> "andato" before speaking
+  return text.replace(/\/[a-zàèéìòù]+\b/gi, '').replace(/\s+/g, ' ').trim();
+}
+function speakItalian(text){
+  if(!TTS_SUPPORTED || !text) return;
+  const utter = new SpeechSynthesisUtterance(speechClean(text));
+  utter.lang = 'it-IT';
+  if(italianVoice) utter.voice = italianVoice;
+  utter.rate = 0.9;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utter);
+}
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-speak]');
+  if(!btn || !btn.dataset.speak) return;
+  e.stopPropagation();
+  speakItalian(btn.dataset.speak);
+}, true); // capture phase: intercept before a parent's own click (e.g. verb-head expand/collapse) fires
 
 /* ---------- CLOZE SENTENCE BANK ---------- */
 const CLOZE = [
@@ -471,7 +547,10 @@ function renderVerbList(filter=""){
           <span class="ita">${v.it}</span> &nbsp;
           <span class="phon">(${v.inf})</span>
         </div>
-        <span class="arrow">▾</span>
+        <div class="head-right">
+          <button class="speak-btn" data-speak="${v.it}" title="השמע את הפועל" aria-label="השמע את הפועל ${v.it}">${SPEAK_ICON}</button>
+          <span class="arrow">▾</span>
+        </div>
       </div>
       <div class="conj-wrap">
         <table class="conj">
@@ -481,7 +560,7 @@ function renderVerbList(filter=""){
               const forms = v[t].map(parseForm);
               return `<tr class="${TENSE_CLASS[t]}">
                 <td>${TENSES[t]}</td>
-                ${forms.map(fm => `<td>${fm.it}<small>${fm.phon}</small></td>`).join("")}
+                ${forms.map(fm => `<td><div class="cell-form"><button class="speak-btn" data-speak="${fm.it}" title="השמע" aria-label="השמע ${fm.it}">${SPEAK_ICON}</button><span>${fm.it}</span></div><small>${fm.phon}</small></td>`).join("")}
               </tr>`;
             }).join("")}
           </tbody>
@@ -539,6 +618,7 @@ function showCard(){
     document.getElementById('fcFrontLabel').textContent = "אין כרטיסים";
     document.getElementById('fcFrontWord').textContent = "-";
     document.getElementById('fcCounter').textContent = "0 מתוך 0";
+    document.getElementById('fcSpeak').dataset.speak = "";
     return;
   }
   const c = fcDeck[fcIndex];
@@ -547,6 +627,7 @@ function showCard(){
   document.getElementById('fcFrontWord').textContent = `${v.he} (${v.it})`;
   document.getElementById('fcBackWord').textContent = c.form.it;
   document.getElementById('fcBackPhon').textContent = c.form.phon;
+  document.getElementById('fcSpeak').dataset.speak = c.form.it;
   document.getElementById('fcCounter').textContent = `כרטיס ${fcIndex+1} מתוך ${fcDeck.length}`;
 }
 flashcardEl.addEventListener('click', ()=> flashcardEl.classList.toggle('flipped'));
@@ -613,6 +694,7 @@ function showClozeItem(){
     document.getElementById('clzMeta').textContent = 'אין משפטים זמינים';
     document.getElementById('clzHe').textContent = '';
     document.getElementById('clzIt').innerHTML = '';
+    document.getElementById('clzSpeak').dataset.speak = '';
     return;
   }
   const item = clzDeck[clzIndex];
@@ -620,6 +702,7 @@ function showClozeItem(){
   document.getElementById('clzMeta').textContent = `פועל: ${v.he} (${v.it}) · ${TENSES[item.tense]} · ${PERSONS[item.person]}   —   משפט ${clzIndex+1} מתוך ${clzDeck.length}`;
   document.getElementById('clzHe').textContent = item.he;
   document.getElementById('clzIt').innerHTML = item.it.replace('___', '<span class="blank">______</span>');
+  document.getElementById('clzSpeak').dataset.speak = item.it.replace('___', item.ans);
   document.getElementById('clzInput').focus();
 }
 function checkAnswer(){
@@ -634,11 +717,11 @@ function checkAnswer(){
     clzStats.correct++;
     clzStats.streak++;
     fb.className = 'feedback ok';
-    fb.innerHTML = `<strong>נכון.</strong> <span class="correct-ans">${item.ans}</span>`;
+    fb.innerHTML = `<strong>נכון.</strong> <span class="correct-ans">${item.ans}</span> <button class="speak-btn" data-speak="${item.ans}" title="השמע" aria-label="השמע את המילה">${SPEAK_ICON}</button>`;
   } else {
     clzStats.streak = 0;
     fb.className = 'feedback bad';
-    fb.innerHTML = `<strong>לא בדיוק.</strong> התשובה הנכונה: <span class="correct-ans">${item.ans}</span>`;
+    fb.innerHTML = `<strong>לא בדיוק.</strong> התשובה הנכונה: <span class="correct-ans">${item.ans}</span> <button class="speak-btn" data-speak="${item.ans}" title="השמע" aria-label="השמע את המילה">${SPEAK_ICON}</button>`;
   }
   updateScoreBar();
   input.disabled = true;
@@ -650,7 +733,7 @@ document.getElementById('clzReveal').addEventListener('click', ()=>{
   const item = clzDeck[clzIndex];
   const fb = document.getElementById('clzFeedback');
   fb.className = 'feedback bad';
-  fb.innerHTML = `<strong>התשובה:</strong> <span class="correct-ans">${item.ans}</span>`;
+  fb.innerHTML = `<strong>התשובה:</strong> <span class="correct-ans">${item.ans}</span> <button class="speak-btn" data-speak="${item.ans}" title="השמע" aria-label="השמע את המילה">${SPEAK_ICON}</button>`;
   document.getElementById('clzInput').disabled = true;
   document.getElementById('clzCheck').disabled = true;
 });
